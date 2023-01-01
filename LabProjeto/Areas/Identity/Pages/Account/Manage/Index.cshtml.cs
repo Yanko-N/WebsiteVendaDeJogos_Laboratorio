@@ -56,7 +56,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Numero de telemóvel")]
             public string PhoneNumber { get; set; }
         }
 
@@ -105,13 +105,13 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Erro inesperado ao configurar o novo numero de telemovel.";
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "O seu perfil foi renovado";
             return RedirectToPage();
         }
     }

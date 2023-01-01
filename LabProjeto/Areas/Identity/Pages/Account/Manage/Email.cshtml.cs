@@ -69,7 +69,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Novo email")]
             public string NewEmail { get; set; }
         }
 
@@ -128,11 +128,11 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Link de confirmação foi enviado para o seu email, verifique a sua caixa de correio";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "O seu email não foi alterado.";
             return RedirectToPage();
         }
 
@@ -164,7 +164,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Email de Verificação enviado, por favor vá ao seu emaiç";
             return RedirectToPage();
         }
     }

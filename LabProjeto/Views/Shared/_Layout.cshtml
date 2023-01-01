@@ -36,7 +36,7 @@
                             if (User.IsInRole("Admin") || User.IsInRole("Funcionario"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="JogoModels" asp-action="Create"> Adicionar Jogo</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="JogoModels" asp-action="Index"> Adicionar Jogo</a>
                                 </li>
 
                                 
@@ -44,7 +44,7 @@
                             if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="CategoriaModels" asp-action="Create"> Adicionar Categoria</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CategoriaModels" asp-action="Index"> Adicionar Categoria</a>
                                 </li>
                             }
 
