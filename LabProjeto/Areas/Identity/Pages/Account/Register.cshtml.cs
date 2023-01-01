@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using LabProjeto.Data;
+using LabProjeto.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,13 +31,18 @@ namespace LabProjeto.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext dbContext,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +50,8 @@ namespace LabProjeto.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -122,6 +131,28 @@ namespace LabProjeto.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
+                   
+                    //make a perfil with user data
+                    var perfil = new PerfilModel() 
+                    {
+                        utilizador = user,
+                        utilizadorId = user.Id,
+                        saldo = 9999,
+                        categoriasFavoritas=null,
+                        jogosComprados=null
+                    };
+
+                    
+
+                        
+
+                    _dbContext.PerfilModel.Add(perfil);
+                    await _dbContext.SaveChangesAsync();
+                        
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                    
+
                     _logger.LogInformation("User created a new account with password.");
 
 
@@ -139,6 +170,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else

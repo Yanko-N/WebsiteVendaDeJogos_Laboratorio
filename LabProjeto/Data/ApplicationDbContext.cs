@@ -13,5 +13,8 @@ namespace LabProjeto.Data
         public DbSet<LabProjeto.Models.JogoModel> JogoModel { get; set; }
         public DbSet<LabProjeto.Models.CategoriaModel> CategoriaModel { get; set; }
         public DbSet<LabProjeto.Models.JogoCategoria> JogoCategoria { get; set; }
+        public DbSet<LabProjeto.Models.PerfilModel> PerfilModel { get; set; }
+        public DbSet<LabProjeto.Models.PerfilCategoria> PerfilCategoria { get; set; }
+        public DbSet<LabProjeto.Models.PerfilJogos> PerfilJogos { get; set; }
     }
 }

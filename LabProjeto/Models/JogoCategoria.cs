@@ -8,7 +8,8 @@ namespace LabProjeto.Models
         [Key]
         public int Id { get; set; }
 
-        public JogoModel jogo { get; set; }
-        public CategoriaModel categoria { get; set; }
+        public int jogoId { get; set; }
+
+        public int categoriaID { get; set; }
     }
 }

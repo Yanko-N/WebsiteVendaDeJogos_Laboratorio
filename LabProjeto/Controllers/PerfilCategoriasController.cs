@@ -10,85 +10,85 @@ using LabProjeto.Models;
 
 namespace LabProjeto.Controllers
 {
-    public class PermissoesModelsController : Controller
+    public class PerfilCategoriasController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PermissoesModelsController(ApplicationDbContext context)
+        public PerfilCategoriasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: PermissoesModels
+        // GET: PerfilCategorias
         public async Task<IActionResult> Index()
         {
-              return View(await _context.PermissoesModel.ToListAsync());
+              return View(await _context.PerfilCategoria.ToListAsync());
         }
 
-        // GET: PermissoesModels/Details/5
+        // GET: PerfilCategorias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.PermissoesModel == null)
+            if (id == null || _context.PerfilCategoria == null)
             {
                 return NotFound();
             }
 
-            var permissoesModel = await _context.PermissoesModel
+            var perfilCategoria = await _context.PerfilCategoria
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (permissoesModel == null)
+            if (perfilCategoria == null)
             {
                 return NotFound();
             }
 
-            return View(permissoesModel);
+            return View(perfilCategoria);
         }
 
-        // GET: PermissoesModels/Create
+        // GET: PerfilCategorias/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: PermissoesModels/Create
+        // POST: PerfilCategorias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome")] PermissoesModel permissoesModel)
+        public async Task<IActionResult> Create([Bind("Id,perfilId,categoriaID")] PerfilCategoria perfilCategoria)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(permissoesModel);
+                _context.Add(perfilCategoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(permissoesModel);
+            return View(perfilCategoria);
         }
 
-        // GET: PermissoesModels/Edit/5
+        // GET: PerfilCategorias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.PermissoesModel == null)
+            if (id == null || _context.PerfilCategoria == null)
             {
                 return NotFound();
             }
 
-            var permissoesModel = await _context.PermissoesModel.FindAsync(id);
-            if (permissoesModel == null)
+            var perfilCategoria = await _context.PerfilCategoria.FindAsync(id);
+            if (perfilCategoria == null)
             {
                 return NotFound();
             }
-            return View(permissoesModel);
+            return View(perfilCategoria);
         }
 
-        // POST: PermissoesModels/Edit/5
+        // POST: PerfilCategorias/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] PermissoesModel permissoesModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,perfilId,categoriaID")] PerfilCategoria perfilCategoria)
         {
-            if (id != permissoesModel.Id)
+            if (id != perfilCategoria.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace LabProjeto.Controllers
             {
                 try
                 {
-                    _context.Update(permissoesModel);
+                    _context.Update(perfilCategoria);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PermissoesModelExists(permissoesModel.Id))
+                    if (!PerfilCategoriaExists(perfilCategoria.Id))
                     {
                         return NotFound();
                     }
@@ -113,49 +113,49 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(permissoesModel);
+            return View(perfilCategoria);
         }
 
-        // GET: PermissoesModels/Delete/5
+        // GET: PerfilCategorias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.PermissoesModel == null)
+            if (id == null || _context.PerfilCategoria == null)
             {
                 return NotFound();
             }
 
-            var permissoesModel = await _context.PermissoesModel
+            var perfilCategoria = await _context.PerfilCategoria
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (permissoesModel == null)
+            if (perfilCategoria == null)
             {
                 return NotFound();
             }
 
-            return View(permissoesModel);
+            return View(perfilCategoria);
         }
 
-        // POST: PermissoesModels/Delete/5
+        // POST: PerfilCategorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.PermissoesModel == null)
+            if (_context.PerfilCategoria == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.PermissoesModel'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.PerfilCategoria'  is null.");
             }
-            var permissoesModel = await _context.PermissoesModel.FindAsync(id);
-            if (permissoesModel != null)
+            var perfilCategoria = await _context.PerfilCategoria.FindAsync(id);
+            if (perfilCategoria != null)
             {
-                _context.PermissoesModel.Remove(permissoesModel);
+                _context.PerfilCategoria.Remove(perfilCategoria);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PermissoesModelExists(int id)
+        private bool PerfilCategoriaExists(int id)
         {
-          return _context.PermissoesModel.Any(e => e.Id == id);
+          return _context.PerfilCategoria.Any(e => e.Id == id);
         }
     }
 }

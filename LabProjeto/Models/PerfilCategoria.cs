@@ -2,12 +2,16 @@
 
 namespace LabProjeto.Models
 {
-    public class CargoModel
-    {
+    public class PerfilCategoria
+    { 
+
 
         [Key]
         public int Id { get; set; }
 
-        public string Nome { get; set; }
+
+        public int perfilId { get; set; }
+
+        public int categoriaID { get; set; }
     }
 }

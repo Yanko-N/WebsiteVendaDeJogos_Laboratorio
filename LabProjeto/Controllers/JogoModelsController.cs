@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LabProjeto.Controllers
 {
@@ -22,8 +23,10 @@ namespace LabProjeto.Controllers
         // GET: JogoModels
         public async Task<IActionResult> Index()
         {
-              return View(await _context.JogoModel.ToListAsync());
+            var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
+            return View(await applicationDbContext.ToListAsync());
         }
+
 
         // GET: JogoModels/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,6 +37,7 @@ namespace LabProjeto.Controllers
             }
 
             var jogoModel = await _context.JogoModel
+                .Include(j => j.categoria)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (jogoModel == null)
             {
@@ -46,15 +50,17 @@ namespace LabProjeto.Controllers
         // GET: JogoModels/Create
         public IActionResult Create()
         {
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome");
             return View();
         }
 
         // POST: JogoModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles ="Admin,Funcionario")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Preco")] JogoModel jogoModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,categoriaId")] JogoModel jogoModel)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +68,7 @@ namespace LabProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
             return View(jogoModel);
         }
 
@@ -78,6 +85,7 @@ namespace LabProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
             return View(jogoModel);
         }
 
@@ -86,7 +94,7 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco")] JogoModel jogoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,categoriaId")] JogoModel jogoModel)
         {
             if (id != jogoModel.Id)
             {
@@ -113,6 +121,7 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
             return View(jogoModel);
         }
 
@@ -125,6 +134,7 @@ namespace LabProjeto.Controllers
             }
 
             var jogoModel = await _context.JogoModel
+                .Include(j => j.categoria)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (jogoModel == null)
             {

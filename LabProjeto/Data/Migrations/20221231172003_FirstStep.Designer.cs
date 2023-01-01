@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221228195613_FirstStep")]
+    [Migration("20221231172003_FirstStep")]
     partial class FirstStep
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,29 +39,6 @@ namespace LabProjeto.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CargoModel");
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.CargoPermissoes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("cargoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("permissaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cargoId");
-
-                    b.HasIndex("permissaoId");
-
-                    b.ToTable("CargoPermissoes");
                 });
 
             modelBuilder.Entity("LabProjeto.Models.CategoriaModel", b =>
@@ -94,17 +71,13 @@ namespace LabProjeto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("categoriaId")
+                    b.Property<int>("categoriaID")
                         .HasColumnType("int");
 
                     b.Property<int>("jogoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("categoriaId");
-
-                    b.HasIndex("jogoId");
 
                     b.ToTable("JogoCategoria");
                 });
@@ -124,12 +97,15 @@ namespace LabProjeto.Data.Migrations
                     b.Property<float>("Preco")
                         .HasColumnType("real");
 
+                    b.Property<int>("categoriaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("JogoModel");
                 });
 
-            modelBuilder.Entity("LabProjeto.Models.PermissoesModel", b =>
+            modelBuilder.Entity("LabProjeto.Models.PerfilCargo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,13 +113,90 @@ namespace LabProjeto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("cargoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("perfilId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissoesModel");
+                    b.ToTable("PerfilCargo");
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilCategoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("PerfilModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("categoriaID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("perfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PerfilModelId");
+
+                    b.ToTable("PerfilCategoria");
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilJogos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("PerfilModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("jogoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("perfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PerfilModelId");
+
+                    b.ToTable("PerfilJogos");
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("cargoId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("saldo")
+                        .HasColumnType("real");
+
+                    b.Property<string>("utilizadorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("cargoId");
+
+                    b.HasIndex("utilizadorId");
+
+                    b.ToTable("PerfilModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -348,7 +401,21 @@ namespace LabProjeto.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LabProjeto.Models.CargoPermissoes", b =>
+            modelBuilder.Entity("LabProjeto.Models.PerfilCategoria", b =>
+                {
+                    b.HasOne("LabProjeto.Models.PerfilModel", null)
+                        .WithMany("categoriasFavoritas")
+                        .HasForeignKey("PerfilModelId");
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilJogos", b =>
+                {
+                    b.HasOne("LabProjeto.Models.PerfilModel", null)
+                        .WithMany("jogosComprados")
+                        .HasForeignKey("PerfilModelId");
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilModel", b =>
                 {
                     b.HasOne("LabProjeto.Models.CargoModel", "cargo")
                         .WithMany()
@@ -356,34 +423,15 @@ namespace LabProjeto.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabProjeto.Models.PermissoesModel", "permissao")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "utilizador")
                         .WithMany()
-                        .HasForeignKey("permissaoId")
+                        .HasForeignKey("utilizadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("cargo");
 
-                    b.Navigation("permissao");
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.JogoCategoria", b =>
-                {
-                    b.HasOne("LabProjeto.Models.CategoriaModel", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabProjeto.Models.JogoModel", "jogo")
-                        .WithMany()
-                        .HasForeignKey("jogoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("categoria");
-
-                    b.Navigation("jogo");
+                    b.Navigation("utilizador");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -435,6 +483,13 @@ namespace LabProjeto.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LabProjeto.Models.PerfilModel", b =>
+                {
+                    b.Navigation("categoriasFavoritas");
+
+                    b.Navigation("jogosComprados");
                 });
 #pragma warning restore 612, 618
         }
