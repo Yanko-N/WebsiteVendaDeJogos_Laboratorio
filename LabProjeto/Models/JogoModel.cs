@@ -8,15 +8,15 @@ namespace LabProjeto.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório o jogo um Nome")]
+        [Required(ErrorMessage = "É obrigatório o jogo ter um Nome")]
         public string Nome { get; set; }
 
+        [Required(ErrorMessage = "É obrigatório o jogo ter um preço")]
 
-        [Required(ErrorMessage ="É obrigatório o jogo ter um preço")]
         public float Preco { get; set; }
 
-        [Required(ErrorMessage ="É obrigatório o jogo ter uma categoria")]
-        public CategoriaModel? categoria;
+        public int categoriaId { get; set; }
+        public  CategoriaModel? categoria { get; set; }
 
     }
 }

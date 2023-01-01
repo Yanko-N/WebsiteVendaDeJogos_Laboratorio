@@ -4,6 +4,7 @@ using LabProjeto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221231172754_SecondStep")]
+    partial class SecondStep
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,23 @@ namespace LabProjeto.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("LabProjeto.Models.CargoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CargoModel");
+                });
 
             modelBuilder.Entity("LabProjeto.Models.CategoriaModel", b =>
                 {
@@ -88,6 +107,25 @@ namespace LabProjeto.Data.Migrations
                     b.ToTable("JogoModel");
                 });
 
+            modelBuilder.Entity("LabProjeto.Models.PerfilCargo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("cargoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("perfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PerfilCargo");
+                });
+
             modelBuilder.Entity("LabProjeto.Models.PerfilCategoria", b =>
                 {
                     b.Property<int>("Id")
@@ -144,6 +182,9 @@ namespace LabProjeto.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("cargoId")
+                        .HasColumnType("int");
+
                     b.Property<float>("saldo")
                         .HasColumnType("real");
 
@@ -152,6 +193,8 @@ namespace LabProjeto.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("cargoId");
 
                     b.HasIndex("utilizadorId");
 
@@ -387,11 +430,19 @@ namespace LabProjeto.Data.Migrations
 
             modelBuilder.Entity("LabProjeto.Models.PerfilModel", b =>
                 {
+                    b.HasOne("LabProjeto.Models.CargoModel", "cargo")
+                        .WithMany()
+                        .HasForeignKey("cargoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "utilizador")
                         .WithMany()
                         .HasForeignKey("utilizadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("cargo");
 
                     b.Navigation("utilizador");
                 });

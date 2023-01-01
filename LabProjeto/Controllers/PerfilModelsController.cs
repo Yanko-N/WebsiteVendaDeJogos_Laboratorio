@@ -10,85 +10,90 @@ using LabProjeto.Models;
 
 namespace LabProjeto.Controllers
 {
-    public class CargoPermissoesController : Controller
+    public class PerfilModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CargoPermissoesController(ApplicationDbContext context)
+        public PerfilModelsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: CargoPermissoes
+        // GET: PerfilModels
         public async Task<IActionResult> Index()
         {
-              return View(await _context.CargoPermissoes.ToListAsync());
+            var applicationDbContext = _context.PerfilModel.Include(p => p.utilizador);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: CargoPermissoes/Details/5
+        // GET: PerfilModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CargoPermissoes == null)
+            if (id == null || _context.PerfilModel == null)
             {
                 return NotFound();
             }
 
-            var cargoPermissoes = await _context.CargoPermissoes
+            var perfilModel = await _context.PerfilModel
+                .Include(p => p.utilizador)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cargoPermissoes == null)
+            if (perfilModel == null)
             {
                 return NotFound();
             }
 
-            return View(cargoPermissoes);
+            return View(perfilModel);
         }
 
-        // GET: CargoPermissoes/Create
+        // GET: PerfilModels/Create
         public IActionResult Create()
         {
+            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: CargoPermissoes/Create
+        // POST: PerfilModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] CargoPermissoes cargoPermissoes)
+        public async Task<IActionResult> Create([Bind("Id,utilizadorId,saldo")] PerfilModel perfilModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cargoPermissoes);
+                _context.Add(perfilModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cargoPermissoes);
+            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id", perfilModel.utilizadorId);
+            return View(perfilModel);
         }
 
-        // GET: CargoPermissoes/Edit/5
+        // GET: PerfilModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CargoPermissoes == null)
+            if (id == null || _context.PerfilModel == null)
             {
                 return NotFound();
             }
 
-            var cargoPermissoes = await _context.CargoPermissoes.FindAsync(id);
-            if (cargoPermissoes == null)
+            var perfilModel = await _context.PerfilModel.FindAsync(id);
+            if (perfilModel == null)
             {
                 return NotFound();
             }
-            return View(cargoPermissoes);
+            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id", perfilModel.utilizadorId);
+            return View(perfilModel);
         }
 
-        // POST: CargoPermissoes/Edit/5
+        // POST: PerfilModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] CargoPermissoes cargoPermissoes)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,utilizadorId,saldo")] PerfilModel perfilModel)
         {
-            if (id != cargoPermissoes.Id)
+            if (id != perfilModel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace LabProjeto.Controllers
             {
                 try
                 {
-                    _context.Update(cargoPermissoes);
+                    _context.Update(perfilModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CargoPermissoesExists(cargoPermissoes.Id))
+                    if (!PerfilModelExists(perfilModel.Id))
                     {
                         return NotFound();
                     }
@@ -113,49 +118,51 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cargoPermissoes);
+            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id", perfilModel.utilizadorId);
+            return View(perfilModel);
         }
 
-        // GET: CargoPermissoes/Delete/5
+        // GET: PerfilModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CargoPermissoes == null)
+            if (id == null || _context.PerfilModel == null)
             {
                 return NotFound();
             }
 
-            var cargoPermissoes = await _context.CargoPermissoes
+            var perfilModel = await _context.PerfilModel
+                .Include(p => p.utilizador)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cargoPermissoes == null)
+            if (perfilModel == null)
             {
                 return NotFound();
             }
 
-            return View(cargoPermissoes);
+            return View(perfilModel);
         }
 
-        // POST: CargoPermissoes/Delete/5
+        // POST: PerfilModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.CargoPermissoes == null)
+            if (_context.PerfilModel == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.CargoPermissoes'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.PerfilModel'  is null.");
             }
-            var cargoPermissoes = await _context.CargoPermissoes.FindAsync(id);
-            if (cargoPermissoes != null)
+            var perfilModel = await _context.PerfilModel.FindAsync(id);
+            if (perfilModel != null)
             {
-                _context.CargoPermissoes.Remove(cargoPermissoes);
+                _context.PerfilModel.Remove(perfilModel);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CargoPermissoesExists(int id)
+        private bool PerfilModelExists(int id)
         {
-          return _context.CargoPermissoes.Any(e => e.Id == id);
+          return _context.PerfilModel.Any(e => e.Id == id);
         }
     }
 }

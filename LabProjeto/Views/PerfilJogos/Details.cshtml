@@ -1,4 +1,4 @@
-﻿@model LabProjeto.Models.JogoCategoria
+﻿@model LabProjeto.Models.PerfilJogos
 
 @{
     ViewData["Title"] = "Details";
@@ -7,20 +7,20 @@
 <h1>Details</h1>
 
 <div>
-    <h4>JogoCategoria</h4>
+    <h4>PerfilJogos</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.perfilId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.perfilId)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.jogoId)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.jogoId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.categoriaID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.categoriaID)
         </dd>
     </dl>
 </div>

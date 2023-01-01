@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace LabProjeto.Models
-
 {
-    public class CargoPermissoes
+    public class PerfilJogos
     {
+
         [Key]
         public int Id { get; set; }
 
-        public PermissoesModel permissao { get; set; }
-        public CargoModel cargo { get; set; }
+        public int perfilId { get; set; }
+
+        public int jogoId { get; set; }
+
 
     }
 }
