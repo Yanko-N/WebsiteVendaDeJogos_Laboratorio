@@ -7,23 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LabProjeto.Controllers
 {
     public class PerfilCategoriasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PerfilCategoriasController(ApplicationDbContext context)
+        public PerfilCategoriasController(ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: PerfilCategorias
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PerfilCategoria.Include(p => p.categoria).Include(p => p.perfil);
-            return View(await applicationDbContext.ToListAsync());
+            string userId= null;
+            foreach (var u in _context.Users)
+            {
+                if (u.UserName == User.Identity.Name)
+                { 
+                    userId=u.Id; break;
+                }
+            }
+            var applicationDbContext = _context.PerfilCategoria.Where(p => p.perfil.utilizadorId == userId).ToListAsync();
+            return View(await applicationDbContext);
         }
 
         // GET: PerfilCategorias/Details/5
