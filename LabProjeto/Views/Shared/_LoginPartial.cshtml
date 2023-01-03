@@ -9,20 +9,80 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User) )
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Olá @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+
+        <style>
+            
+            .dropbtn {
+                background-color: white;
+                
+                color: black;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+            }
+
+            
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+                
+                .dropdown-content a {
+                    color: black;
+                    padding: 12px 16px;
+                    text-decoration: none;
+                    display: block;
+                }
+
+                    
+                .dropdown-content a:hover {
+                        background-color: whitesmoke;
+                }
+
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+           
+            .dropdown:hover .dropbtn {
+                background-color: whitesmoke;
+            }
+        </style>
+
+     <div class="dropdown">
+        <button class="dropbtn">Perfil</button>
+        <div class="dropdown-content">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Opções</a>
+               
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+                
+                
+     
+        </div>
+     </div>
+    
 }
 else
 {
-    <li class="nav-item">
+   <!-- <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registar Conta</a>
     </li>
+         -->
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Iniciar Sessão</a>
     </li>

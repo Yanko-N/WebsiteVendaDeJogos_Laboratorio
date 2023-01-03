@@ -22,7 +22,8 @@ namespace LabProjeto.Controllers
         // GET: JogoCategorias
         public async Task<IActionResult> Index()
         {
-              return View(await _context.JogoCategoria.ToListAsync());
+            var applicationDbContext = _context.JogoCategoria.Include(j => j.categoria).Include(j => j.jogo);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: JogoCategorias/Details/5
@@ -34,6 +35,8 @@ namespace LabProjeto.Controllers
             }
 
             var jogoCategoria = await _context.JogoCategoria
+                .Include(j => j.categoria)
+                .Include(j => j.jogo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (jogoCategoria == null)
             {
@@ -46,6 +49,8 @@ namespace LabProjeto.Controllers
         // GET: JogoCategorias/Create
         public IActionResult Create()
         {
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome");
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,jogoId,categoriaID")] JogoCategoria jogoCategoria)
+        public async Task<IActionResult> Create([Bind("Id,jogoId,categoriaId")] JogoCategoria jogoCategoria)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace LabProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoCategoria.categoriaId);
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", jogoCategoria.jogoId);
             return View(jogoCategoria);
         }
 
@@ -78,6 +85,8 @@ namespace LabProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoCategoria.categoriaId);
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", jogoCategoria.jogoId);
             return View(jogoCategoria);
         }
 
@@ -86,7 +95,7 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,jogoId,categoriaID")] JogoCategoria jogoCategoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,jogoId,categoriaId")] JogoCategoria jogoCategoria)
         {
             if (id != jogoCategoria.Id)
             {
@@ -113,6 +122,8 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoCategoria.categoriaId);
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", jogoCategoria.jogoId);
             return View(jogoCategoria);
         }
 
@@ -125,6 +136,8 @@ namespace LabProjeto.Controllers
             }
 
             var jogoCategoria = await _context.JogoCategoria
+                .Include(j => j.categoria)
+                .Include(j => j.jogo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (jogoCategoria == null)
             {

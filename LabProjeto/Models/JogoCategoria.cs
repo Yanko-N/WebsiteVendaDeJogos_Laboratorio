@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 
 namespace LabProjeto.Models
 {
@@ -9,7 +10,10 @@ namespace LabProjeto.Models
         public int Id { get; set; }
 
         public int jogoId { get; set; }
+        public JogoModel? jogo { get; set; }
+       
 
-        public int categoriaID { get; set; }
+        public int categoriaId { get; set; }
+        public CategoriaModel? categoria { get; set; }
     }
 }

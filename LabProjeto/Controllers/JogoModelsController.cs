@@ -65,12 +65,27 @@ namespace LabProjeto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Preco,categoriaId")] JogoModel jogoModel)
         {
+           
+
+            
             if (ModelState.IsValid)
             {
                 _context.Add(jogoModel);
                 await _context.SaveChangesAsync();
+
+                var jogo = _context.JogoModel.FirstOrDefault(j => j.Equals(jogoModel));
+                JogoCategoria jc = new JogoCategoria();
+                if (jogo != null)
+                {
+                    jc.jogoId = jogoModel.Id;
+                    jc.categoriaId = jogoModel.categoriaId;
+                    _context.Add(jc);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+           
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
             return View(jogoModel);
         }
@@ -156,6 +171,17 @@ namespace LabProjeto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            //REMOVER JOGO DE JOGO CATEGORIA
+
+            var jogo= _context.JogoCategoria.Single(o => o .jogoId == id);
+            if (jogo != null)
+            {
+                _context.JogoCategoria.Remove(jogo);
+                await _context.SaveChangesAsync();
+            }
+
+
             if (_context.JogoModel == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.JogoModel'  is null.");

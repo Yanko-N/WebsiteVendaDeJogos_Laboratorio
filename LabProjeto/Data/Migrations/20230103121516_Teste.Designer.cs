@@ -4,6 +4,7 @@ using LabProjeto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230103121516_Teste")]
+    partial class Teste
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,29 +44,6 @@ namespace LabProjeto.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CategoriaModel");
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.JogoCategoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("categoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("jogoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("categoriaId");
-
-                    b.HasIndex("jogoId");
-
-                    b.ToTable("JogoCategoria");
                 });
 
             modelBuilder.Entity("LabProjeto.Models.JogoModel", b =>
@@ -361,25 +340,6 @@ namespace LabProjeto.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.JogoCategoria", b =>
-                {
-                    b.HasOne("LabProjeto.Models.CategoriaModel", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabProjeto.Models.JogoModel", "jogo")
-                        .WithMany()
-                        .HasForeignKey("jogoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("categoria");
-
-                    b.Navigation("jogo");
                 });
 
             modelBuilder.Entity("LabProjeto.Models.JogoModel", b =>

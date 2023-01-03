@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace LabProjeto.Models
 {
@@ -11,7 +14,10 @@ namespace LabProjeto.Models
 
 
         public int perfilId { get; set; }
+        public PerfilModel? perfil { get; set; }
 
-        public int categoriaID { get; set; }
+        public int categoriaId { get; set; }
+        public CategoriaModel? categoria { get; set; }
+
     }
 }

@@ -138,7 +138,8 @@ namespace LabProjeto.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        {   
+            
             if (_context.PerfilJogos == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.PerfilJogos'  is null.");

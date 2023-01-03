@@ -16,6 +16,12 @@ namespace LabProjeto.Data.Migrations
                 name: "CargoModel");
 
             migrationBuilder.DropTable(
+                name: "PerfilCategoria");
+
+            migrationBuilder.DropTable(
+                name: "JogoCategoria");
+
+            migrationBuilder.DropTable(
                 name: "PerfilCargo");
 
             migrationBuilder.DropIndex(

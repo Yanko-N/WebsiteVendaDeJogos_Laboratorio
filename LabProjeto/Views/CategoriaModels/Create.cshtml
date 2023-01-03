@@ -1,12 +1,12 @@
 ﻿@model LabProjeto.Models.CategoriaModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Adicionar Categorias";
 }
 
-<h1>Create</h1>
+<h1>Adicionar Categorias</h1>
 
-<h4>CategoriaModel</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,6 +17,7 @@
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
                 <input asp-for="Descricao" class="form-control" />
@@ -30,7 +31,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar a Lista</a>
 </div>
 
 @section Scripts {

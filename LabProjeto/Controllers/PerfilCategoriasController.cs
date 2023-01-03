@@ -22,7 +22,8 @@ namespace LabProjeto.Controllers
         // GET: PerfilCategorias
         public async Task<IActionResult> Index()
         {
-              return View(await _context.PerfilCategoria.ToListAsync());
+            var applicationDbContext = _context.PerfilCategoria.Include(p => p.categoria).Include(p => p.perfil);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: PerfilCategorias/Details/5
@@ -34,6 +35,8 @@ namespace LabProjeto.Controllers
             }
 
             var perfilCategoria = await _context.PerfilCategoria
+                .Include(p => p.categoria)
+                .Include(p => p.perfil)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perfilCategoria == null)
             {
@@ -46,6 +49,8 @@ namespace LabProjeto.Controllers
         // GET: PerfilCategorias/Create
         public IActionResult Create()
         {
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome");
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,perfilId,categoriaID")] PerfilCategoria perfilCategoria)
+        public async Task<IActionResult> Create([Bind("Id,perfilId,categoriaId")] PerfilCategoria perfilCategoria)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace LabProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", perfilCategoria.categoriaId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilCategoria.perfilId);
             return View(perfilCategoria);
         }
 
@@ -78,6 +85,8 @@ namespace LabProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", perfilCategoria.categoriaId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilCategoria.perfilId);
             return View(perfilCategoria);
         }
 
@@ -86,7 +95,7 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,perfilId,categoriaID")] PerfilCategoria perfilCategoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,perfilId,categoriaId")] PerfilCategoria perfilCategoria)
         {
             if (id != perfilCategoria.Id)
             {
@@ -113,6 +122,8 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", perfilCategoria.categoriaId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilCategoria.perfilId);
             return View(perfilCategoria);
         }
 
@@ -125,6 +136,8 @@ namespace LabProjeto.Controllers
             }
 
             var perfilCategoria = await _context.PerfilCategoria
+                .Include(p => p.categoria)
+                .Include(p => p.perfil)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perfilCategoria == null)
             {

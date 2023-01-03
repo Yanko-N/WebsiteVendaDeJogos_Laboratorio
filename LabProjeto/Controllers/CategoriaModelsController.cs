@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace LabProjeto.Controllers
 {
@@ -20,12 +22,14 @@ namespace LabProjeto.Controllers
         }
 
         // GET: CategoriaModels
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
               return View(await _context.CategoriaModel.ToListAsync());
         }
 
         // GET: CategoriaModels/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.CategoriaModel == null)
@@ -44,6 +48,7 @@ namespace LabProjeto.Controllers
         }
 
         // GET: CategoriaModels/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +57,7 @@ namespace LabProjeto.Controllers
         // POST: CategoriaModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel)
@@ -66,6 +72,7 @@ namespace LabProjeto.Controllers
         }
 
         // GET: CategoriaModels/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.CategoriaModel == null)
@@ -84,6 +91,7 @@ namespace LabProjeto.Controllers
         // POST: CategoriaModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel)
@@ -117,8 +125,10 @@ namespace LabProjeto.Controllers
         }
 
         // GET: CategoriaModels/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
+
             if (id == null || _context.CategoriaModel == null)
             {
                 return NotFound();
@@ -135,10 +145,20 @@ namespace LabProjeto.Controllers
         }
 
         // POST: CategoriaModels/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //REMOVER categora DE perfil CATEGORIA
+
+            var categoria = _context.PerfilCategoria.Single(o => o.categoriaId == id);
+            if (categoria != null)
+            {
+                _context.PerfilCategoria.Remove(categoria);
+                await _context.SaveChangesAsync();
+            }
+
             if (_context.CategoriaModel == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.CategoriaModel'  is null.");

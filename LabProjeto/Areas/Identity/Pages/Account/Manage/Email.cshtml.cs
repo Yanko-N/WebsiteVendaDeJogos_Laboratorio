@@ -164,7 +164,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account.Manage
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            StatusMessage = "Email de Verificação enviado, por favor vá ao seu emaiç";
+            StatusMessage = "Email de Verificação enviado, por favor vá ao seu email";
             return RedirectToPage();
         }
     }
