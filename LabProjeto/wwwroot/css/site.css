@@ -16,3 +16,92 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* ------------------------------------Homescreen----------------------------------------------------------- */
+.top-header {
+    margin-top: 100px;
+    display: flex;
+}
+
+.welcome-header {
+    flex: 50%
+}
+
+.column-picture {
+    flex: 50%;
+    padding-left: 120px
+}
+
+.welcome-text {
+    font-size: 75px;
+}
+
+.catalog-button {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-top: 175px
+}
+
+.welcome-picture {
+    width: 400px;
+}
+
+.game-picture {
+    width: 250px;
+    cursor: pointer;
+}
+
+.categories {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.categories-title {
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+.scroll-menu {
+    overflow: auto;
+    white-space: nowrap;
+    margin-bottom: 50px;
+}
+
+.scroll-menu-content {
+    display: inline-block;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.recomended-label {
+    margin-top: 100px;
+    text-align: center;
+    font-size: 50px;
+}
+
+.recomended-label-text {
+    margin-top: 40px;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 10px;
+}
+    
