@@ -1,0 +1,40 @@
+﻿@model IEnumerable<LabProjeto.Models.JogoModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="top-header">
+    <div class="welcome-header">
+        <div class="welcome-text">
+            Procure os jogos perfeitos para si
+        </div>
+        <button class="catalog-button">
+            Catálogo
+        </button>
+    </div>
+    <div class="column-picture" >
+        <img src="https://t3.ftcdn.net/jpg/02/86/94/26/360_F_286942684_qNv56oMpDnIqCr8t6IrvA1EAcHEi9oAq.jpg" class="welcome-picture" />
+    </div>
+
+</div>
+
+<div class="categories">
+    <div class="categories-title">
+        Categorias
+    </div>
+    <div class="scroll-menu">
+
+            @foreach (var item in Model) {
+                <div class="scroll-menu-content" >
+                <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture" height="130" width="100" />
+                <div class="category-name"> @Html.DisplayFor(modelItem => item.categoria.Nome) </div>
+                </div>
+       
+            }
+
+        
+    </div>
+</div>
+
+ 

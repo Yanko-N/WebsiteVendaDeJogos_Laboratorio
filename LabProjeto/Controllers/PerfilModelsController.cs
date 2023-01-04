@@ -20,6 +20,8 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilModels
+
+       
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.PerfilModel.Include(p => p.utilizador);

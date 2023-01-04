@@ -21,6 +21,7 @@ namespace LabProjeto.Data
         
         public DbSet<LabProjeto.Models.PerfilCategoria> PerfilCategoria { get; set; }
         
-        
+
+
     }
 }

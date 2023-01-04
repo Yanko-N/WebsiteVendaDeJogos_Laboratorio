@@ -19,6 +19,12 @@ namespace LabProjeto.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> HomeScreen()
+        {
+            var applicationDbContext = _context.JogoModel.Include(j=>j.categoria);
+            
+            return View(await applicationDbContext.ToListAsync());
+        }
         // GET: JogoCategorias
         public async Task<IActionResult> Index()
         {
