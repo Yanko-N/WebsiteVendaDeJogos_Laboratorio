@@ -9,8 +9,12 @@ namespace LabProjeto.Models
         public int Id { get; set; }
 
         public int perfilId { get; set; }
+        public PerfilModel? perfil { get; set; }
+
 
         public int jogoId { get; set; }
+        public JogoModel? jogo { get; set; }
+      
 
 
     }

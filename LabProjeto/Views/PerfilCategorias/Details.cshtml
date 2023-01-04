@@ -10,18 +10,21 @@
     <h4>PerfilCategoria</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.perfil)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.perfil.utilizadorId)
-        </dd>
-        <dt class = "col-sm-2">
+         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.categoria)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.categoria.Nome)
         </dd>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.categoria.Descricao)
+        </dt>
+       
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.categoria.Descricao)
+        </dd>
+       
     </dl>
 </div>
 <div>

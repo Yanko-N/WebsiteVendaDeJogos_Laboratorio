@@ -27,16 +27,25 @@ namespace LabProjeto.Controllers
         // GET: PerfilCategorias
         public async Task<IActionResult> Index()
         {
-            string userId= null;
-            foreach (var u in _context.Users)
+            List<PerfilCategoria> list = new List<PerfilCategoria>();
+            var utilizador = await _context.Users.SingleOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            if(utilizador != null)
             {
-                if (u.UserName == User.Identity.Name)
-                { 
-                    userId=u.Id; break;
+                var perfil = await _context.PerfilModel.SingleOrDefaultAsync(p => p.utilizadorId == utilizador.Id);
+                if (perfil != null)
+                {
+                    list = await _context.PerfilCategoria.Include(p => p.categoria).Where(p => p.perfilId == perfil.Id).ToListAsync();
+                    return View(list);
                 }
+                
             }
-            var applicationDbContext = _context.PerfilCategoria.Where(p => p.perfil.utilizadorId == userId).ToListAsync();
-            return View(await applicationDbContext);
+
+
+
+
+            return View();
+            
         }
 
         // GET: PerfilCategorias/Details/5
@@ -72,8 +81,21 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,perfilId,categoriaId")] PerfilCategoria perfilCategoria)
+        public async Task<IActionResult> Create([Bind("Id,categoriaId")] PerfilCategoria perfilCategoria)
         {
+            var utilizador = await _context.Users.SingleOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            if (utilizador != null)
+            {
+                var perfil = await _context.PerfilModel.SingleOrDefaultAsync(p => p.utilizadorId == utilizador.Id);
+                if (perfil != null)
+                {
+                    perfilCategoria.perfil = perfil;
+                    perfilCategoria.perfilId=perfil.Id;
+                }
+
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(perfilCategoria);
