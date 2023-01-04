@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -50,6 +51,12 @@
 
                             
                         }
+                        <form asp-controller="JogoModels" asp-action="VerJogos" enctype="multipart/form-data">
+                            <div class="navbar-left" style="margin-top:8px;">
+                                <input type="text" name="myText">
+                                <input type="submit" name="Search"></>
+                            </div>
+                        </form>
                         
                     </ul>
                     <partial name="_LoginPartial" />
@@ -68,6 +75,11 @@
             &copy; 2022 - LabProjeto - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
+    <script>
+        function myFunction() {
+            TempData["Data2"] = document.getElementById("myText").value;
+        }
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

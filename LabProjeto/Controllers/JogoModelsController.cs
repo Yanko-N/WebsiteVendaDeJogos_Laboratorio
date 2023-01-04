@@ -8,12 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace LabProjeto.Controllers
 {
     public class JogoModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private string _search;
 
         public JogoModelsController(ApplicationDbContext context)
         {
@@ -26,7 +28,36 @@ namespace LabProjeto.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
+            string search = HttpContext.Session.GetString("myText");
+            ;
+            if (!string.IsNullOrEmpty(search))
+            {
+                HttpContext.Session.SetString("myText", "");
+
+
+                var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome == search);
+
+                if (applicationDbContext2.ToList().Count == 0)
+                {
+                    var applicationDbContext3 = _context.JogoModel.Include(j => j.categoria).Where(j => j.categoria.Nome == search);
+                    return View(await applicationDbContext3.ToListAsync());
+                }
+
+                return View(await applicationDbContext2.ToListAsync());
+
+            }
+
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public IActionResult VerJogos(string myText)
+        {
+            if (!string.IsNullOrEmpty(myText))
+            {
+                HttpContext.Session.SetString("myText", myText);
+            }
+
+            return RedirectToAction("Index", "JogoModels");
         }
 
 
