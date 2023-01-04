@@ -22,7 +22,8 @@ namespace LabProjeto.Controllers
         // GET: PerfilJogos
         public async Task<IActionResult> Index()
         {
-              return View(await _context.PerfilJogos.ToListAsync());
+            var applicationDbContext = _context.PerfilJogos.Include(p => p.jogo).Include(p => p.perfil);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: PerfilJogos/Details/5
@@ -34,6 +35,8 @@ namespace LabProjeto.Controllers
             }
 
             var perfilJogos = await _context.PerfilJogos
+                .Include(p => p.jogo)
+                .Include(p => p.perfil)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perfilJogos == null)
             {
@@ -46,6 +49,8 @@ namespace LabProjeto.Controllers
         // GET: PerfilJogos/Create
         public IActionResult Create()
         {
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome");
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId");
             return View();
         }
 
@@ -62,6 +67,8 @@ namespace LabProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", perfilJogos.jogoId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilJogos.perfilId);
             return View(perfilJogos);
         }
 
@@ -78,6 +85,8 @@ namespace LabProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", perfilJogos.jogoId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilJogos.perfilId);
             return View(perfilJogos);
         }
 
@@ -113,6 +122,8 @@ namespace LabProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", perfilJogos.jogoId);
+            ViewData["perfilId"] = new SelectList(_context.PerfilModel, "Id", "utilizadorId", perfilJogos.perfilId);
             return View(perfilJogos);
         }
 
@@ -125,6 +136,8 @@ namespace LabProjeto.Controllers
             }
 
             var perfilJogos = await _context.PerfilJogos
+                .Include(p => p.jogo)
+                .Include(p => p.perfil)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (perfilJogos == null)
             {
@@ -138,8 +151,7 @@ namespace LabProjeto.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {   
-            
+        {
             if (_context.PerfilJogos == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.PerfilJogos'  is null.");
