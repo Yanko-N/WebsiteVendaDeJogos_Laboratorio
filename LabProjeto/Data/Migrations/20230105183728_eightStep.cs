@@ -4,7 +4,7 @@
 
 namespace LabProjeto.Data.Migrations
 {
-    public partial class Teste2 : Migration
+    public partial class eightStep : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -45,6 +45,8 @@ namespace LabProjeto.Data.Migrations
                 principalTable: "PerfilModel",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
+
+            
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
