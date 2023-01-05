@@ -1,4 +1,7 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
@@ -7,8 +10,21 @@
     <li class="nav-item "><a class="nav-link  @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item "><a class="nav-link  @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="PerfilCategorias" asp-action="Index">Lista de Categorias Favoritas</a></li>
-    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="JogoModels" asp-action="Index">Dashboard Jogos</a></li>
-    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="PerfilCategorias" asp-action="Index">Dashboard Categorias</a></li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin") || User.IsInRole("Funcionario"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="JogoModels" asp-action="Index">DashBoard Jogos</a>
+            </li>
+        }
+        if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="CategoriaModels" asp-action="Index"> DashBoard Categorias</a>
+            </li>
+        }
+    }
    
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Dados Pessoais</a></li>
 
