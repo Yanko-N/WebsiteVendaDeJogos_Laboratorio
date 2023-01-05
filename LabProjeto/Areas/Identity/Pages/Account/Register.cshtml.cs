@@ -150,7 +150,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account
                     _dbContext.PerfilModel.Add(perfil);
                     await _dbContext.SaveChangesAsync();
                         
-                    await _userManager.AddToRoleAsync(user, "Cliente");
+                    await _userManager.AddToRoleAsync(user, "Admin");
                     
 
                     _logger.LogInformation("User created a new account with password.");

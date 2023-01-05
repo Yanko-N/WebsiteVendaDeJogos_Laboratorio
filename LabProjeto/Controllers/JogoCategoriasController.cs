@@ -28,7 +28,7 @@ namespace LabProjeto.Controllers
         // GET: JogoCategorias
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.JogoCategoria.Include(j => j.categoria).Include(j => j.jogo);
+            var applicationDbContext = _context.JogoCategoria.Include(j => j.categoria).Include(n => n.jogo);
             return View(await applicationDbContext.ToListAsync());
         }
 

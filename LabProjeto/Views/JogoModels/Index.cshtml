@@ -25,6 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.categoria)
             </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.plataforma)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -39,6 +42,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.categoria.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem=>item.plataforma)
             </td>
             <td>
                 @if (SignInManager.IsSignedIn(User))

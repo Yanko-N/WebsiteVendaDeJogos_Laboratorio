@@ -15,6 +15,8 @@ namespace LabProjeto.Models
 
         public float Preco { get; set; }
 
+        public string plataforma { get; set; }
+
         public int categoriaId { get; set; }
         public  CategoriaModel? categoria { get; set; }
 

@@ -24,22 +24,22 @@ namespace LabProjeto.Controllers
 
       
         // GET: JogoModels
-        [Authorize(Roles = "Admin,Funcionario")]
+        
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
             string search = HttpContext.Session.GetString("myText");
-            ;
+            
             if (!string.IsNullOrEmpty(search))
             {
                 HttpContext.Session.SetString("myText", "");
 
 
-                var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome == search);
+                var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
 
                 if (applicationDbContext2.ToList().Count == 0)
                 {
-                    var applicationDbContext3 = _context.JogoModel.Include(j => j.categoria).Where(j => j.categoria.Nome == search);
+                    var applicationDbContext3 = _context.JogoModel.Include(j => j.categoria).Where(j => j.categoria.Nome.Contains(search));
                     return View(await applicationDbContext3.ToListAsync());
                 }
 
@@ -95,13 +95,14 @@ namespace LabProjeto.Controllers
         [Authorize(Roles ="Admin,Funcionario")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
         {
            
 
             
             if (ModelState.IsValid)
             {
+                
                 _context.Add(jogoModel);
                 await _context.SaveChangesAsync();
 
@@ -146,7 +147,7 @@ namespace LabProjeto.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Funcionario")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
         {
             if (id != jogoModel.Id)
             {
@@ -171,6 +172,17 @@ namespace LabProjeto.Controllers
                         throw;
                     }
                 }
+
+                var JogoCategoria = new JogoCategoria() 
+                { 
+                    jogo=jogoModel, 
+                    jogoId=jogoModel.Id,
+                    categoria=jogoModel.categoria,
+                    categoriaId=jogoModel.categoriaId
+                };
+
+                //COrrigir 
+              //  _context.JogoCategoria.Where(j => j.jogoId = jogoModel.Id) = JogoCategoria;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
