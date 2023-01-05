@@ -173,16 +173,20 @@ namespace LabProjeto.Controllers
                     }
                 }
 
-                var JogoCategoria = new JogoCategoria() 
-                { 
-                    jogo=jogoModel, 
-                    jogoId=jogoModel.Id,
-                    categoria=jogoModel.categoria,
-                    categoriaId=jogoModel.categoriaId
-                };
+                var JogoCategoria = _context.JogoCategoria.SingleOrDefault(c => c.jogoId == jogoModel.Id);
+                if (JogoCategoria != null)
+                {
+                    JogoCategoria.categoria = jogoModel.categoria;
+                    JogoCategoria.categoriaId = jogoModel.categoriaId;
 
-                //COrrigir 
-              //  _context.JogoCategoria.Where(j => j.jogoId = jogoModel.Id) = JogoCategoria;
+
+                    _context.Update(JogoCategoria);
+                    await _context.SaveChangesAsync();
+
+                }
+
+
+                //  _context.JogoCategoria.Where(j => j.jogoId = jogoModel.Id) = JogoCategoria;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
