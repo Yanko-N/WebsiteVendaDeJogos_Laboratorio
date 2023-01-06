@@ -1,15 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-        
-
-
-   
-
+          
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User) )
 {
-
         <style>
             
             .dropbtn {
@@ -21,23 +16,21 @@
                 border: none;
                 cursor: pointer;
             }
-
             
             .dropdown {
                 position: relative;
                 display: inline-block;
             }
 
-            
+           
             .dropdown-content {
                 display: none;
                 position: absolute;
                 background-color: white;
-                min-width: 160px;
+                max-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                 z-index: 1;
             }
-
                 
                 .dropdown-content a {
                     color: black;
@@ -45,18 +38,15 @@
                     text-decoration: none;
                     display: block;
                 }
-
-                    
+                   
                 .dropdown-content a:hover {
                         background-color: whitesmoke;
                 }
-
-            
+         
             .dropdown:hover .dropdown-content {
                 display: block;
             }
-
-           
+          
             .dropdown:hover .dropbtn {
                 background-color: whitesmoke;
             }
@@ -65,17 +55,12 @@
      <div class="dropdown">
         <button class="dropbtn">Perfil</button>
         <div class="dropdown-content">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Opções</a>
-               
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="text-align: left;">Dashboard</a>              
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                </form>
-                
-                
-     
+                    <button type="submit" class="nav-link btn btn-link text-dark" style="text-align: left;">Logout</button>
+                </form>                                    
         </div>
-     </div>
-    
+     </div>    
 }
 else
 {
