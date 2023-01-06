@@ -21,6 +21,7 @@ namespace LabProjeto.Controllers
 
         public async Task<IActionResult> HomeScreen()
         {
+           
             var applicationDbContext = _context.JogoModel.Include(j=>j.categoria);
             
             return View(await applicationDbContext.ToListAsync());
