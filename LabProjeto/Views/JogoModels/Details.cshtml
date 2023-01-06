@@ -12,9 +12,14 @@
         <dt class = "col-sm-2">
             Nome
         </dt>
-        
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            Plataforma
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.plataforma.Nome)
         </dd>
         <dt class = "col-sm-2">
             Preço
@@ -27,12 +32,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.categoria.Nome)
-        </dd>
-        <dt class="col-sm-2">
-            Plataforma
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.plataforma)
         </dd>
     </dl>
 </div>

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 
 namespace LabProjeto.Models
@@ -15,7 +16,8 @@ namespace LabProjeto.Models
 
         public float Preco { get; set; }
 
-        public string plataforma { get; set; }
+        public int plataformaId { get; set; }
+        public PlataformaModel? plataforma { get; set; }
 
         public int categoriaId { get; set; }
         public  CategoriaModel? categoria { get; set; }

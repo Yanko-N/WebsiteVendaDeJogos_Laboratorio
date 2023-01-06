@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LabProjeto.Models.PlataformaModel>
+
+@{
+    ViewData["Title"] = "Plataformas";
+}
+
+<h1>Lista de Plataformas</h1>
+
+<p>
+    <a asp-action="Create">Adicionar plataforma</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

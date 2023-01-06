@@ -86,6 +86,7 @@ namespace LabProjeto.Controllers
         public IActionResult Create()
         {
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome");
+            ViewData["plataformaId"] = new SelectList(_context.PlataformaModel, "Id", "Nome");
             return View();
         }
 
@@ -95,11 +96,8 @@ namespace LabProjeto.Controllers
         [Authorize(Roles ="Admin,Funcionario")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,plataformaId,categoriaId")] JogoModel jogoModel)
         {
-           
-
-            
             if (ModelState.IsValid)
             {
                 
@@ -120,6 +118,7 @@ namespace LabProjeto.Controllers
             }
            
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
+            ViewData["plataformaId"] = new SelectList(_context.PlataformaModel, "Id", "Nome", jogoModel.plataformaId);
             return View(jogoModel);
         }
 
@@ -147,7 +146,7 @@ namespace LabProjeto.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Funcionario")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,plataformaID,categoriaId")] JogoModel jogoModel)
         {
             if (id != jogoModel.Id)
             {

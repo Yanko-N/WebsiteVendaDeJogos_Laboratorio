@@ -20,13 +20,13 @@
                 Nome
             </th>
             <th>
+                Plataforma
+            </th>
+            <th>
                 Preço
             </th>
             <th>
                 Categoria
-            </th>
-            <th>
-                Plataforma
             </th>
             <th></th>
         </tr>
@@ -38,13 +38,13 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
+                    @Html.DisplayFor(modelItem => item.plataforma.Nome)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.categoria.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem=>item.plataforma)
             </td>
             <td>
                 @if (SignInManager.IsSignedIn(User))
