@@ -9,20 +9,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.categoria.Nome)
+                Nome
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.categoria.Descricao)
+                Descrição
             </th>
             <th></th>
-
         </tr>
     </thead>
  <tbody>
 @foreach (var item in Model){
             <tr>
                 <td>
-                    @item.categoria.Nome
+                    @Html.DisplayFor(modelItem =>item.categoria.Nome)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.categoria.Descricao)

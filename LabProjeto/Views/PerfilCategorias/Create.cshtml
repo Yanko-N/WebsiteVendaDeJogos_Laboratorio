@@ -4,7 +4,7 @@
     ViewData["Title"] = "Lista de Categorias Favoritas";
 }
 
-<h1>AdicionarCategoria</h1>
+<h1>Adicionar Categoria</h1>
 
 
 <hr />
@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="categoriaId" class="control-label"></label>
+                <label class="control-label">Categoria</label>
                 <select asp-for="categoriaId" class ="form-control" asp-items="ViewBag.categoriaId"></select>
             </div>
             <div class="form-group">
@@ -24,7 +24,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Voltar a lista</a>
+    <a asp-action="Index">Voltar à lista</a>
 </div>
 
 @section Scripts {

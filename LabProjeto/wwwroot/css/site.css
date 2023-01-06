@@ -17,6 +17,11 @@ body {
   margin-bottom: 60px;
 }
 
+.center {
+    margin-left: 750px;
+    width: 1000px;
+}
+
 /* ------------------------------------Homescreen----------------------------------------------------------- */
 .top-header {
     margin-top: 100px;

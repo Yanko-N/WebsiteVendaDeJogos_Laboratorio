@@ -4,27 +4,27 @@
     ViewData["Title"] = "Apagar";
 }
 
-<h1>DApagar</h1>
+<h1>Apagar</h1>
 
-<h3>Voce tem certeza que quer apagar isto?</h3>
+<h3>Você tem a certeza que quer apagar isto?</h3>
 <div>
     <h4>JogoModel</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
+            Nome
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nome)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Preco)
+            Preço
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Preco)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.categoria)
+            Categoria
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.categoria.Nome)
@@ -33,7 +33,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
         <a asp-action="Index">Voltar para a lista</a>
     </form>
 </div>
