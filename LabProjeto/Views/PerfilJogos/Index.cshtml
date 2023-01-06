@@ -4,36 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Lista de Jogos Comprados</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Perfil
-            </th>
-            <th>
-                Jogo
-            </th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Plataforma</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var perfilJogos in Model) {
         <tr>
+                <td>@perfilJogos.jogo.Nome</td>
+                <td>@perfilJogos.jogo.Preco</td>
+                <td>@perfilJogos.jogo.plataforma</td>
             <td>
-                @Html.DisplayFor(modelItem => item.perfil.utilizadorId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jogo.Nome)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                <a asp-action="Edit" asp-route-id="@perfilJogos.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@perfilJogos.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@perfilJogos.Id">Apagar</a>
             </td>
         </tr>
 }

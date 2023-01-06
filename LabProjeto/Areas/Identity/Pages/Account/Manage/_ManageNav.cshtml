@@ -10,6 +10,7 @@
     <li class="nav-item "><a class="nav-link  @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item "><a class="nav-link  @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="PerfilCategorias" asp-action="Index">Lista de Categorias Favoritas</a></li>
+    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="PerfilJogos" asp-action="Index">Histórico de Compras</a></li>
     @if (SignInManager.IsSignedIn(User))
     {
         if (User.IsInRole("Admin") || User.IsInRole("Funcionario"))
