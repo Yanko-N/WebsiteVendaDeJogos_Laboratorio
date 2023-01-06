@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LabProjeto.Models.PerfilJogos>
+﻿@model IEnumerable<LabProjeto.Models.JogoModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,15 +17,15 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var perfilJogos in Model) {
+@foreach (var jogo in Model) {
         <tr>
-                <td>@perfilJogos.jogo.Nome</td>
-                <td>@perfilJogos.jogo.Preco</td>
-                <td>@perfilJogos.jogo.plataforma</td>
+                <td>@jogo.Nome</td>
+                <td>@jogo.Preco</td>
+                <td>@jogo.plataforma</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@perfilJogos.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@perfilJogos.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@perfilJogos.Id">Apagar</a>
+                <a asp-action="Edit" asp-route-id="@jogo.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@jogo.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@jogo.Id">Apagar</a>
             </td>
         </tr>
 }

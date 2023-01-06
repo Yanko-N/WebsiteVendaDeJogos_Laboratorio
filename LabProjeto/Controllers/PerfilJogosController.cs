@@ -29,14 +29,14 @@ namespace LabProjeto.Controllers
         //}
 
         // GET: PerfilJogos
-        public IActionResult Index(int perfilId)
+        public async Task<IActionResult> Index(string utilizadorId)
         {
-            var jogos = _context.PerfilJogos
-              .Include(pj => pj.jogo)
-              .Where(pj => pj.perfilId == perfilId)
-              .ToList();
+            var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
+                                 where pj.perfil.utilizadorId == utilizadorId
+                                 select pj.jogo;
+              
 
-            return View(jogos);
+            return View(jogoscomprados);
         }
 
         // GET: PerfilJogos/Details/5
