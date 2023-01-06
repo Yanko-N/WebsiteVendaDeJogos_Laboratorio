@@ -27,7 +27,9 @@ namespace LabProjeto.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
+            var applicationDbContext = _context.JogoModel
+                .Include(j => j.categoria);
+
             string search = HttpContext.Session.GetString("myText");
             
             if (!string.IsNullOrEmpty(search))
@@ -40,6 +42,11 @@ namespace LabProjeto.Controllers
                 if (applicationDbContext2.ToList().Count == 0)
                 {
                     var applicationDbContext3 = _context.JogoModel.Include(j => j.categoria).Where(j => j.categoria.Nome.Contains(search));
+                    if (applicationDbContext3.ToList().Count == 0)
+                    {
+                        var applicationDbContext4 = _context.JogoModel.Include(j => j.categoria).Where(j => j.plataforma.Contains(search));
+                        return View(await applicationDbContext4.ToListAsync());
+                    }
                     return View(await applicationDbContext3.ToListAsync());
                 }
 
