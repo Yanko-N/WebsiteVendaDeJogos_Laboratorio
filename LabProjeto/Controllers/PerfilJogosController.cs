@@ -31,13 +31,34 @@ namespace LabProjeto.Controllers
         // GET: PerfilJogos
         public async Task<IActionResult> Index(string utilizadorId)
         {
-            var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
-                                 where pj.perfil.utilizadorId == utilizadorId
-                                 select pj.jogo;
-              
+            //var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
+            //                     where pj.perfil.utilizadorId == utilizadorId
+            //                     select pj.jogo;
 
-            return View(jogoscomprados);
+
+
+            //return View(jogoscomprados);
+            var applicationDbContext = _context.JogoModel
+           .Include(j => j.categoria);
+
+            string search = HttpContext.Session.GetString("myText");
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                HttpContext.Session.SetString("myText", "");
+
+
+                var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
+
+               
+                return View(await applicationDbContext2.ToListAsync());
+
+            }
+
+            return View(await applicationDbContext.ToListAsync()); 
         }
+
+    
 
         // GET: PerfilJogos/Details/5
         public async Task<IActionResult> Details(int? id)
