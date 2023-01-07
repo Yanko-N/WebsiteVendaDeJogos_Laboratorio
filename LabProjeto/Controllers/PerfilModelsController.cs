@@ -7,25 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Drawing.Printing;
 
 namespace LabProjeto.Controllers
 {
     public class PerfilModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public PerfilModelsController(ApplicationDbContext context)
+
+        public PerfilModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: PerfilModels
-
-       
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PerfilModel.Include(p => p.utilizador);
-            return View(await applicationDbContext.ToListAsync());
+            var users = _userManager.Users;
+            var model = new List<UsersRolesViewModel>();
+            foreach (var user in users)
+            {
+                var roles = _userManager.GetRolesAsync(user).Result;
+                model.Add(new UsersRolesViewModel
+                {
+                    Id= user.Id,
+                    Email = user.Email,
+                    Role = roles.SingleOrDefault()
+                });
+            }
+            return View(model);
         }
 
         // GET: PerfilModels/Details/5
@@ -72,20 +88,27 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        
+        public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null || _context.PerfilModel == null)
+            var user = await _userManager.FindByIdAsync(id);
+            
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var perfilModel = await _context.PerfilModel.FindAsync(id);
-            if (perfilModel == null)
+            var roles = _roleManager.Roles.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
+
+            var model = new UsersRolesViewModel
             {
-                return NotFound();
-            }
-            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id", perfilModel.utilizadorId);
-            return View(perfilModel);
+                Id = user.Id,
+                Email = user.Email,
+                Role = (await _userManager.GetRolesAsync(user)).SingleOrDefault(),
+                Roles = roles
+            };
+
+            return View(model);
         }
 
         // POST: PerfilModels/Edit/5
@@ -93,35 +116,31 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,utilizadorId,saldo")] PerfilModel perfilModel)
+        public async Task<IActionResult> Edit(string id, UsersRolesViewModel model)
         {
-            if (id != perfilModel.Id)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Remove the user from all roles
+            var result = await _userManager.RemoveFromRolesAsync(user,await _userManager.GetRolesAsync(user));
+            if (!result.Succeeded)
             {
-                try
-                {
-                    _context.Update(perfilModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PerfilModelExists(perfilModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "An error occurred while updating the user's roles.");
+                return View(model);
             }
-            ViewData["utilizadorId"] = new SelectList(_context.Users, "Id", "Id", perfilModel.utilizadorId);
-            return View(perfilModel);
+         
+            // Add the user to the selected role
+            result = await _userManager.AddToRoleAsync(user, model.Role);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "An error occurred while updating the user's role.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
         }
 
         // GET: PerfilModels/Delete/5

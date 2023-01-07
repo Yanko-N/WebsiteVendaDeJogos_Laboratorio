@@ -1,42 +1,35 @@
-﻿@model IEnumerable<LabProjeto.Models.PerfilModel>
-
+﻿@model List<UsersRolesViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista Utilizadores";
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Adicionar novo</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                Email
+               Email
             </th>
-           
             <th>
-                Saldo
+                Cargo
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.utilizador.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.saldo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.Email</td>
+                    <td>@item.Role</td>
+                    
+                    <td>
+                    <a asp-action="Edit" asp-controller="PerfilModels" asp-route-id="@item.Id">Editar</a>
+                    </td>
+                </tr>
+        }
     </tbody>
 </table>
