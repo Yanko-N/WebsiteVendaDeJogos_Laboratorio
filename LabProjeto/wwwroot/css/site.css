@@ -58,6 +58,13 @@ a {
     padding-right: 50px;
     margin-top: 175px
 }
+.buy-button {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 20px;
+    width: 90px;
+    text-align: center;
+}
 
 .welcome-picture {
     width: 400px;
