@@ -10,9 +10,13 @@
 
 <h1>Lista de Jogos</h1>
 
-<p>
-    <a asp-action="Create">Adicionar novo jogo</a>
-</p>
+@if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Adicionar novo jogo</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -49,17 +53,14 @@
             <td>
                 @if (SignInManager.IsSignedIn(User))
                     {
-                        if (User.IsInRole("Admin") )
+                        if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
                         {
 
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                             <a asp-action="Delete" asp-route-id="@item.Id"> Apagar </a>
 
                         }
-                        if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
-                        {
-                            <a asp-action="Details" asp-route-id="@item.Id"> Detalhes </a>
-                        }
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
                     }
                     
             </td>

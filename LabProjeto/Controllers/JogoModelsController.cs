@@ -9,6 +9,7 @@ using LabProjeto.Data;
 using LabProjeto.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace LabProjeto.Controllers
 {
@@ -22,9 +23,9 @@ namespace LabProjeto.Controllers
             _context = context;
         }
 
-      
+
         // GET: JogoModels
-        
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.JogoModel
@@ -57,6 +58,40 @@ namespace LabProjeto.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public  IActionResult Comprar(int id)
+        {
+            var jogo = _context.JogoModel.SingleOrDefault(j => j.Id == id);
+
+            var user =  _context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+
+            var perfil = _context.PerfilModel.SingleOrDefault(p=>p.utilizador == user);
+
+            if (jogo != null && user != null)
+            {
+                PerfilJogos perfilJogos = new PerfilJogos()
+                {
+                    perfil = perfil,
+                    perfilId = perfil.Id,
+                    jogo=jogo,
+                    jogoId=jogo.Id
+
+
+
+                };
+
+                _context.PerfilJogos.Add(perfilJogos);
+                 _context.SaveChangesAsync();
+
+                return RedirectToAction("HomeScreen", "JogoCategoria");
+            }
+            else 
+            {
+                return NotFound();
+            }
+
+
+            
+        }
         public IActionResult VerJogos(string myText)
         {
             if (!string.IsNullOrEmpty(myText))
@@ -69,7 +104,7 @@ namespace LabProjeto.Controllers
 
 
         // GET: JogoModels/Details/5
-        [Authorize(Roles = "Admin,Funcionario")]
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.JogoModel == null)
