@@ -49,17 +49,14 @@
             <td>
                 @if (SignInManager.IsSignedIn(User))
                     {
-                        if (User.IsInRole("Admin") )
+                        if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
                         {
 
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                             <a asp-action="Delete" asp-route-id="@item.Id"> Apagar </a>
 
                         }
-                        if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
-                        {
-                            <a asp-action="Details" asp-route-id="@item.Id"> Detalhes </a>
-                        }
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
                     }
                     
             </td>
