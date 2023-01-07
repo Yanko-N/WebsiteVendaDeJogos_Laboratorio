@@ -16,6 +16,5 @@ namespace LabProjeto.Models
         public JogoModel? jogo { get; set; }
       
 
-
     }
 }

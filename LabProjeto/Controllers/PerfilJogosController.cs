@@ -18,12 +18,25 @@ namespace LabProjeto.Controllers
         {
             _context = context;
         }
+        //public IActionResult GamesByUser(int perfilId)
+        //{
+        //    var jogos = _context.PerfilJogos
+        //      .Include(pj => pj.jogo)
+        //      .Where(pj => pj.perfilId == perfilId)
+        //      .ToList();
+
+        //    return View(jogos);
+        //}
 
         // GET: PerfilJogos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string utilizadorId)
         {
-            var applicationDbContext = _context.PerfilJogos.Include(p => p.jogo).Include(p => p.perfil);
-            return View(await applicationDbContext.ToListAsync());
+            var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
+                                 where pj.perfil.utilizadorId == utilizadorId
+                                 select pj.jogo;
+              
+
+            return View(jogoscomprados);
         }
 
         // GET: PerfilJogos/Details/5

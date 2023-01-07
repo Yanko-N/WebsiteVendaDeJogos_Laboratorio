@@ -1,39 +1,31 @@
-﻿@model IEnumerable<LabProjeto.Models.PerfilJogos>
+﻿@model IEnumerable<LabProjeto.Models.JogoModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Lista de Jogos Comprados</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Perfil
-            </th>
-            <th>
-                Jogo
-            </th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Plataforma</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var jogo in Model) {
         <tr>
+                <td>@jogo.Nome</td>
+                <td>@jogo.Preco</td>
+                <td>@jogo.plataforma</td>
             <td>
-                @Html.DisplayFor(modelItem => item.perfil.utilizadorId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jogo.Nome)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                <a asp-action="Edit" asp-route-id="@jogo.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@jogo.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@jogo.Id">Apagar</a>
             </td>
         </tr>
 }
