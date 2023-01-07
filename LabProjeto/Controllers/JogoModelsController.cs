@@ -25,7 +25,7 @@ namespace LabProjeto.Controllers
 
 
         // GET: JogoModels
-        [Authorize(Roles = "Admin,Funcionario")]
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.JogoModel

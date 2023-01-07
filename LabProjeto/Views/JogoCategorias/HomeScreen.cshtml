@@ -28,7 +28,8 @@
             @foreach (var item in Model) {
                 <div class="scroll-menu-content" >
                 <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture" height="130" width="100" />
-                <div class="category-name"> @Html.DisplayFor(modelItem => item.categoria.Nome) </div>
+                <div class="category-name">  <a asp-controller="JogoModels" asp-action="VerJogos" asp-route-id="@item.categoria.Nome">@Html.DisplayFor(modelItem => item.categoria.Nome)</a></div>
+                
                 </div>
        
             }
