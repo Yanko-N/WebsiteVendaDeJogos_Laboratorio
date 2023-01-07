@@ -39,7 +39,7 @@
 </div>
 
 <div class="recomended-label">
-    Recomendados para si
+    Jogos
 </div>
 
 <div class="recomended-games">
@@ -51,7 +51,7 @@
         {
                     <div class="scroll-menu-content" >
                         <img src="http://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" class="game-picture" height="130" width="100" />
-                    <div class="game-name"> @Html.DisplayFor(modelItem => item.Nome) </div>
+                        <div class="game-name"> <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Nome)</a> </div>
                     </div>
 
         }
