@@ -37,15 +37,9 @@ namespace LabProjeto.Controllers
                 {
                     list = await _context.PerfilCategoria.Include(p => p.categoria).Where(p => p.perfilId == perfil.Id).ToListAsync();
                     return View(list);
-                }
-                
+                }               
             }
-
-
-
-
-            return View();
-            
+            return View();           
         }
 
         // GET: PerfilCategorias/Details/5

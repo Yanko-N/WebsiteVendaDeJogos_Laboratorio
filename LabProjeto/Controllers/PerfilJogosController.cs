@@ -7,58 +7,53 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LabProjeto.Controllers
 {
     public class PerfilJogosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PerfilJogosController(ApplicationDbContext context)
+        public PerfilJogosController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-        //public IActionResult GamesByUser(int perfilId)
-        //{
-        //    var jogos = _context.PerfilJogos
-        //      .Include(pj => pj.jogo)
-        //      .Where(pj => pj.perfilId == perfilId)
-        //      .ToList();
-
-        //    return View(jogos);
-        //}
 
         // GET: PerfilJogos
-        public async Task<IActionResult> Index(string utilizadorId)
+        public async Task<IActionResult> Index()
         {
-            //var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
-            //                     where pj.perfil.utilizadorId == utilizadorId
-            //                     select pj.jogo;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var userId = user.Id;
+
+            var jogoscomprados = from pj in _context.PerfilJogos.AsNoTracking()
+                                 where pj.perfil.utilizadorId == userId
+                                 select pj.jogo;
+
+            return View(await jogoscomprados.AsNoTracking().ToListAsync());
+        }
+        //    var applicationDbContext = _context.JogoModel
+        //   .Include(j => j.categoria);
+
+        //    string search = HttpContext.Session.GetString("myText");
+
+        //    if (!string.IsNullOrEmpty(search))
+        //    {
+        //        HttpContext.Session.SetString("myText", "");
 
 
-
-            //return View(jogoscomprados);
-            var applicationDbContext = _context.JogoModel
-           .Include(j => j.categoria);
-
-            string search = HttpContext.Session.GetString("myText");
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                HttpContext.Session.SetString("myText", "");
-
-
-                var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
+        //        var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
 
                
-                return View(await applicationDbContext2.ToListAsync());
+        //        return View(await applicationDbContext2.ToListAsync());
 
-            }
+        //    }
 
-            return View(await applicationDbContext.ToListAsync()); 
-        }
-
-    
+        //    return View(await applicationDbContext.ToListAsync()); 
+        //}
+   
 
         // GET: PerfilJogos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -204,5 +199,24 @@ namespace LabProjeto.Controllers
         {
           return _context.PerfilJogos.Any(e => e.Id == id);
         }
+
+        //POST: PerfilJogos/Comprar/5
+        [HttpPost]
+        public async Task<IActionResult> Comprar(int id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var userId = user.Id;
+
+            var perfil = _context.PerfilModel.FirstOrDefault(p => p.utilizadorId == userId);
+            var jogo = _context.JogoModel.Find(id);
+
+            perfil.jogosComprados.Add(new PerfilJogos { perfil = perfil, jogo = jogo });
+            perfil.saldo -= jogo.Preco;
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

@@ -16,11 +16,13 @@ namespace LabProjeto.Controllers
     public class JogoModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
         private string _search;
 
-        public JogoModelsController(ApplicationDbContext context)
+        public JogoModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
 

@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<LabProjeto.Models.JogoModel>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -21,11 +22,6 @@
                 <td>@jogo.Nome</td>
                 <td>@jogo.Preco</td>
                 <td>@jogo.plataforma</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@jogo.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@jogo.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@jogo.Id">Apagar</a>
-            </td>
         </tr>
 }
     </tbody>

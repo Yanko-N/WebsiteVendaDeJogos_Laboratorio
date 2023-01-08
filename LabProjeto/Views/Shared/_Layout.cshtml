@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using LabProjeto.Models
+@using LabProjeto.Data
 
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+
 
 <!DOCTYPE html>
 
@@ -33,6 +36,7 @@
                             </div>
                         </form>
                     </ul>
+                    @await Html.PartialAsync("_SaldoPartial")
                     <partial name="_LoginPartial" />
                 </div>
             </div>
