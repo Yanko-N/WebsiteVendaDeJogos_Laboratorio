@@ -26,8 +26,16 @@ namespace LabProjeto.Controllers
         }
 
 
+        public async Task<IActionResult> HomeScreen()
+        {
+
+            var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // GET: JogoModels
-        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+        
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.JogoModel
@@ -76,15 +84,12 @@ namespace LabProjeto.Controllers
                     perfilId = perfil.Id,
                     jogo=jogo,
                     jogoId=jogo.Id
-
-
-
                 };
 
                 _context.PerfilJogos.Add(perfilJogos);
-                 _context.SaveChangesAsync();
+                _context.SaveChangesAsync();
 
-                return RedirectToAction("HomeScreen", "JogoCategoria");
+                return RedirectToAction("HomeScreen", "JogoModels");
             }
             else 
             {
@@ -94,7 +99,7 @@ namespace LabProjeto.Controllers
 
             
         }
-        public IActionResult VerJogos(string myText)
+        public async Task<IActionResult> VerJogos(string myText)
         {
             if (!string.IsNullOrEmpty(myText))
             {
@@ -104,6 +109,16 @@ namespace LabProjeto.Controllers
             return RedirectToAction("Index", "JogoModels");
         }
 
+        public async Task<IActionResult> VerCategorias(int? id)
+        {
+             var cat= _context.CategoriaModel.FirstOrDefault(m=>m.Id==id);
+            if (cat != null)
+            {
+                HttpContext.Session.SetString("myText", cat.Nome);
+            }
+
+            return RedirectToAction("Index", "JogoModels");
+        }
 
         // GET: JogoModels/Details/5
        
@@ -147,14 +162,7 @@ namespace LabProjeto.Controllers
                 _context.Add(jogoModel);
                 await _context.SaveChangesAsync();
                 var jogo = _context.JogoModel.FirstOrDefault(j => j.Equals(jogoModel));
-                JogoCategoria jc = new JogoCategoria();
-                if (jogo != null)
-                {
-                    jc.jogoId = jogoModel.Id;
-                    jc.categoriaId = jogoModel.categoriaId;
-                    _context.Add(jc);
-                    await _context.SaveChangesAsync();
-                }
+               
                 return RedirectToAction(nameof(Index));
             }          
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
@@ -194,7 +202,7 @@ namespace LabProjeto.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
 
                 try
                 {
@@ -212,21 +220,6 @@ namespace LabProjeto.Controllers
                         throw;
                     }
                 }
-
-                var JogoCategoria = _context.JogoCategoria.SingleOrDefault(c => c.jogoId == jogoModel.Id);
-                if (JogoCategoria != null)
-                {
-                    JogoCategoria.categoria = jogoModel.categoria;
-                    JogoCategoria.categoriaId = jogoModel.categoriaId;
-
-
-                    _context.Update(JogoCategoria);
-                    await _context.SaveChangesAsync();
-
-                }
-
-
-                //  _context.JogoCategoria.Where(j => j.jogoId = jogoModel.Id) = JogoCategoria;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
@@ -259,16 +252,6 @@ namespace LabProjeto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            //REMOVER JOGO DE JOGO CATEGORIA
-
-            var jogo= _context.JogoCategoria.Single(o => o .jogoId == id);
-            if (jogo != null)
-            {
-                _context.JogoCategoria.Remove(jogo);
-                await _context.SaveChangesAsync();
-            }
-
 
             if (_context.JogoModel == null)
             {

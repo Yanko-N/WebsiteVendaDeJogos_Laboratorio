@@ -55,7 +55,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=JogoCategorias}/{action=HomeScreen}/{id?}");
+    pattern: "{controller=JogoModels}/{action=HomeScreen}/{id?}");
 app.MapRazorPages();
 
 app.Run();

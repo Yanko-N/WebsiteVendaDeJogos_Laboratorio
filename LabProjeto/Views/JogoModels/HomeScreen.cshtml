@@ -9,9 +9,11 @@
         <div class="welcome-text">
             Procure os jogos perfeitos para si
         </div>
-        <button class="catalog-button">
-            <a  asp-controller="JogoModels" asp-action="Index">Catalogo</a>
-        </button>
+        <div>
+            <a class="catalog-button" asp-controller="JogoModels" asp-action="Index">Catalogo</a>
+        </div>
+         
+        
     </div>
     <div class="column-picture" >
         <img src="https://t3.ftcdn.net/jpg/02/86/94/26/360_F_286942684_qNv56oMpDnIqCr8t6IrvA1EAcHEi9oAq.jpg" class="welcome-picture" />
@@ -35,9 +37,12 @@
                 displayedCategories.Add(item.categoria.Nome);
 
                 <div class="scroll-menu-content" >
-                    <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture" height="130" width="100" />
+                    
                     <div class="category-name">
-                        <a asp-controller="JogoModels" asp-action="VerJogos" asp-route-id="@item.categoria.Nome">@Html.DisplayFor(modelItem => item.categoria.Nome)</a>
+                        @Html.DisplayFor(modelItem => item.categoria.Nome)
+                        <a asp-controller="JogoModels" asp-action="VerCategorias" asp-route-id="@item.categoriaId" class="btn">
+                            <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture" height="130" width="100" />
+                        </a>
                     </div>
                 </div>
             }
@@ -59,8 +64,15 @@
         @foreach (var item in Model)
         {
                     <div class="scroll-menu-content" >
-                        <img src="http://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" class="game-picture" height="130" width="100" />
-                        <div class="game-name"> <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Nome)</a> </div>
+
+                        
+                        <div class="btn"> 
+                            <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">
+                            <img src="http://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" class="game-picture" height="130" width="100" />    
+                            </a>
+                             @Html.DisplayFor(modelItem => item.Nome)
+                        </div>
+
                     </div>
 
         }
