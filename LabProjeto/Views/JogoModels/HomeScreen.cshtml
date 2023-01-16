@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LabProjeto.Models.JogoModel>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Página Inicial";
 }
 
 <div class="top-header">
@@ -39,9 +39,10 @@
                 <div class="scroll-menu-content" >
                     
                     <div class="category-name">
-                        @Html.DisplayFor(modelItem => item.categoria.Nome)
-                        <a asp-controller="JogoModels" asp-action="VerCategorias" asp-route-id="@item.categoriaId" class="btn">
-                            <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture" height="130" width="100" />
+                        
+                        <a asp-controller="JogoModels" asp-action="VerCategorias" asp-route-id="@item.categoriaId" class="btn row">
+                            @Html.DisplayFor(modelItem => item.categoria.Nome)
+                            <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture row" height="130" width="100" />
                         </a>
                     </div>
                 </div>

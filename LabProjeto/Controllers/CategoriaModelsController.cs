@@ -151,13 +151,16 @@ namespace LabProjeto.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             //REMOVER categora DE perfil CATEGORIA
-
-            var categoria = _context.PerfilCategoria.Single(o => o.categoriaId == id);
-            if (categoria != null)
+            if (_context.PerfilCategoria.Any(c=>c.categoriaId == id))
             {
-                _context.PerfilCategoria.Remove(categoria);
-                await _context.SaveChangesAsync();
+                var categoria = _context.PerfilCategoria.Single(o => o.categoriaId == id);
+                if (categoria != null)
+                {
+                    _context.PerfilCategoria.Remove(categoria);
+                    await _context.SaveChangesAsync();
+                }
             }
+            
 
             if (_context.CategoriaModel == null)
             {
