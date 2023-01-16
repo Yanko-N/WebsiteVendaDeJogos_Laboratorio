@@ -17,12 +17,15 @@ namespace LabProjeto.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IHostEnvironment _he;
+
         private string _search;
 
-        public JogoModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public JogoModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IHostEnvironment he)
         {
             _context = context;
             _userManager = userManager;
+            _he = he;
         }
 
 
@@ -154,11 +157,20 @@ namespace LabProjeto.Controllers
         [Authorize(Roles ="Admin,Funcionario")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Create([Bind("Nome,plataforma,Foto,Preco,categoriaId")] JogoModel jogoModel, IFormFile Foto)
         {
 
             if (ModelState.IsValid)
             {
+                if (Foto != null)
+                {
+                    string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Jogos/", Path.GetFileName(Foto.FileName));
+                    FileStream fs = new FileStream(destination, FileMode.Create);
+                    Foto.CopyTo(fs);
+                    fs.Close();
+
+                    jogoModel.Foto = Foto.FileName;
+                }
                 _context.Add(jogoModel);
                 await _context.SaveChangesAsync();
                 var jogo = _context.JogoModel.FirstOrDefault(j => j.Equals(jogoModel));

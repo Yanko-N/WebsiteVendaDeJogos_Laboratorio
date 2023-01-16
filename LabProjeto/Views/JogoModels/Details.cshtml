@@ -1,13 +1,14 @@
 ﻿@model LabProjeto.Models.JogoModel
 
 @{
-    ViewData["Title"] = "Detalhes";
+    ViewData["Title"] = Model.Nome;
 }
 
-<h1>Detalhes</h1>
+<h1>@Model.Nome</h1>
 
 <div>
     <hr />
+    <img src="/Fotos/Jogos/@Model.Foto" width="600" height="400">
     <dl class="row">
         <dt class = "col-sm-2">
             Nome

@@ -41,7 +41,7 @@
                     <div class="category-name">
                         
                         <a asp-controller="JogoModels" asp-action="VerCategorias" asp-route-id="@item.categoriaId" class="btn row">
-                            @Html.DisplayFor(modelItem => item.categoria.Nome)
+                            
                             <img src="https://c4.wallpaperflare.com/wallpaper/919/449/166/battlefield-battlefield-1-gas-mask-wallpaper-preview.jpg" class="game-picture row" height="130" width="100" />
                         </a>
                     </div>
@@ -69,7 +69,7 @@
                         
                         <div class="btn"> 
                             <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">
-                            <img src="http://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" class="game-picture" height="130" width="100" />    
+                            <img src="/Fotos/Jogos/@item.Foto" class="game-picture" height="130" width="100" />    
                             </a>
                              @Html.DisplayFor(modelItem => item.Nome)
                         </div>

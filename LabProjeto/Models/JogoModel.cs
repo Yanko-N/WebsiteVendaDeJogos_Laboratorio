@@ -11,8 +11,12 @@ namespace LabProjeto.Models
         [Required(ErrorMessage = "É obrigatório o jogo ter um Nome")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório o jogo ter um preço")]
 
+        
+        [RegularExpression(@"^.+\.([jJ][pP][gG])$", ErrorMessage = "Só jpg files")]
+        public string? Foto { get; set; }
+        
+        [Required(ErrorMessage = "É obrigatório o jogo ter um preço")]
         public float Preco { get; set; }
 
         public string plataforma { get; set; }

@@ -21,14 +21,21 @@
     <thead>
         <tr>
             <th>
+                Foto
+            </th>
+
+            <th>
                 Nome
             </th>
+            
             <th>
                 Preço
             </th>
+
             <th>
                 Categoria
             </th>
+
             <th>
                 Plataforma
             </th>
@@ -39,8 +46,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                    <img src="/Fotos/Jogos/@item.Foto" width="100" height="100">
+            </td>
+
+            <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>

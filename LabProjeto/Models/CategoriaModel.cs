@@ -12,7 +12,9 @@ namespace LabProjeto.Models
         [StringLength(50, ErrorMessage = "Maximo de {0} caracteres e mínimo de {1}", MinimumLength = 3)]
         public string Nome { get; set; }
 
-
         public string Descricao { get; set; }
+
+        [RegularExpression(@"^.+\.([jJ][pP][gG])$", ErrorMessage = "Só jpg files")]
+        public string? Foto { get; set; }
     }
 }
