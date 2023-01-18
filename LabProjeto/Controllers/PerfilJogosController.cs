@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LabProjeto.Data;
 using LabProjeto.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LabProjeto.Controllers
 {
@@ -23,6 +24,7 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilJogos
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -46,16 +48,18 @@ namespace LabProjeto.Controllers
 
         //        var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
 
-               
+
         //        return View(await applicationDbContext2.ToListAsync());
 
         //    }
 
         //    return View(await applicationDbContext.ToListAsync()); 
         //}
-   
+
 
         // GET: PerfilJogos/Details/5
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.PerfilJogos == null)
@@ -76,6 +80,8 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilJogos/Create
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public IActionResult Create()
         {
             ViewData["jogoId"] = new SelectList(_context.JogoModel, "Id", "Nome");
@@ -88,6 +94,8 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Create([Bind("Id,perfilId,jogoId")] PerfilJogos perfilJogos)
         {
             if (ModelState.IsValid)
@@ -102,6 +110,8 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilJogos/Edit/5
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.PerfilJogos == null)
@@ -124,6 +134,8 @@ namespace LabProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,perfilId,jogoId")] PerfilJogos perfilJogos)
         {
             if (id != perfilJogos.Id)
@@ -157,6 +169,8 @@ namespace LabProjeto.Controllers
         }
 
         // GET: PerfilJogos/Delete/5
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.PerfilJogos == null)
@@ -179,6 +193,8 @@ namespace LabProjeto.Controllers
         // POST: PerfilJogos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.PerfilJogos == null)
@@ -202,20 +218,28 @@ namespace LabProjeto.Controllers
 
         //POST: PerfilJogos/Comprar/5
         [HttpPost]
+        [Authorize(Roles = "Admin,Funcionario,Cliente")]
+
         public async Task<IActionResult> Comprar(int id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var userId = user.Id;
+            if (user != null)
+            {
+                var userId = user.Id;
 
-            var perfil = _context.PerfilModel.FirstOrDefault(p => p.utilizadorId == userId);
-            var jogo = _context.JogoModel.Find(id);
+                var perfil = _context.PerfilModel.FirstOrDefault(p => p.utilizadorId == userId);
+                var jogo = _context.JogoModel.Find(id);
 
-            perfil.jogosComprados.Add(new PerfilJogos { perfil = perfil, jogo = jogo });
-            perfil.saldo -= jogo.Preco;
+                perfil.jogosComprados.Add(new PerfilJogos { perfil = perfil, jogo = jogo });
+                perfil.saldo -= jogo.Preco;
 
-            _context.SaveChanges();
+                _context.SaveChanges();
+                
+            }
 
             return RedirectToAction(nameof(Index));
+
+            
         }
 
     }

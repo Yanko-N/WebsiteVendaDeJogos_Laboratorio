@@ -10,6 +10,7 @@ using LabProjeto.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using LabProjeto.Data.Migrations;
 
 namespace LabProjeto.Controllers
 {
@@ -41,6 +42,7 @@ namespace LabProjeto.Controllers
         
         public async Task<IActionResult> Index()
         {
+            
             var applicationDbContext = _context.JogoModel
                 .Include(j => j.categoria);
 
@@ -205,19 +207,30 @@ namespace LabProjeto.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Funcionario")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,plataforma,categoriaId")] JogoModel jogoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,plataforma,Foto,categoriaId")] JogoModel jogoModel, IFormFile Foto)
         {
             if (id != jogoModel.Id)
             {
                 return NotFound();
             }
-
+            
+            
             if (ModelState.IsValid)
             {
+                if (Foto != null)
+                {
+                    string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Jogos/", Path.GetFileName(Foto.FileName));
+                    FileStream fs = new FileStream(destination, FileMode.Create);
+                    Foto.CopyTo(fs);
+                    fs.Close();
 
+                    jogoModel.Foto = Foto.FileName;
+                }
+                
 
                 try
                 {
+                  
                     _context.Update(jogoModel);
                     await _context.SaveChangesAsync();
                 }

@@ -93,7 +93,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "O {0} tem de ser pelo menos {2} e no maximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -103,11 +103,11 @@ namespace LabProjeto.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar password")]
+            [Compare("Password", ErrorMessage = "As plavras passes não são iguais.")]
             public string ConfirmPassword { get; set; }
 
-            public float Saldo { get; set; }
+            
         }
 
 
@@ -131,29 +131,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-
-                   
-                    //make a perfil with user data
-                    var perfil = new PerfilModel() 
-                    {
-                        utilizador = user,
-                        utilizadorId = user.Id,
-                        saldo = 9999,
-                        categoriasFavoritas=null,
-                        jogosComprados=null
-                    };
-
-                    
-
-                        
-
-                    _dbContext.PerfilModel.Add(perfil);
-                    await _dbContext.SaveChangesAsync();
-                        
-                    await _userManager.AddToRoleAsync(user, "Admin");
-                    
-
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Novo Utilizador Criado.");
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -165,11 +143,26 @@ namespace LabProjeto.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirma o teu email",
+                        $"Por favor confirma a tua conta em <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clica aqui!</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        //make a perfil with user data
+                        var perfil = new PerfilModel()
+                        {
+                            utilizador = user,
+                            utilizadorId = user.Id,
+                            saldo = 9999,
+                            categoriasFavoritas = null,
+                            jogosComprados = null
+                        };
+
+                        _dbContext.PerfilModel.Add(perfil);
+                        await _dbContext.SaveChangesAsync();
+
+                        await _userManager.AddToRoleAsync(user, "Admin");
+
 
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
