@@ -15,10 +15,12 @@ namespace LabProjeto.Controllers
     public class CategoriaModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostEnvironment _he;
 
-        public CategoriaModelsController(ApplicationDbContext context)
+        public CategoriaModelsController(ApplicationDbContext context, IHostEnvironment he)
         {
             _context = context;
+            _he = he;
         }
 
         // GET: CategoriaModels
@@ -60,10 +62,19 @@ namespace LabProjeto.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel,IFormFile Foto)
         {
             if (ModelState.IsValid)
             {
+                if (Foto != null)
+                {
+                    string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Categorias/", Path.GetFileName(Foto.FileName));
+                    FileStream fs = new FileStream(destination, FileMode.Create);
+                    Foto.CopyTo(fs);
+                    fs.Close();
+
+                    categoriaModel.Foto = Foto.FileName;
+                }
                 _context.Add(categoriaModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,7 +105,7 @@ namespace LabProjeto.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao")] CategoriaModel categoriaModel,IFormFile Foto)
         {
             if (id != categoriaModel.Id)
             {
@@ -105,6 +116,16 @@ namespace LabProjeto.Controllers
             {
                 try
                 {
+                    if (Foto != null)
+                    {
+                        string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Categorias/", Path.GetFileName(Foto.FileName));
+                        FileStream fs = new FileStream(destination, FileMode.Create);
+                        Foto.CopyTo(fs);
+                        fs.Close();
+
+                        categoriaModel.Foto = Foto.FileName;
+                    }
+
                     _context.Update(categoriaModel);
                     await _context.SaveChangesAsync();
                 }

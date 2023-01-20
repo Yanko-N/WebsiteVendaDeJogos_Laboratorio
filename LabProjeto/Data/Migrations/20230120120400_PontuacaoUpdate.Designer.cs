@@ -4,6 +4,7 @@ using LabProjeto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120120400_PontuacaoUpdate")]
+    partial class PontuacaoUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,6 +195,9 @@ namespace LabProjeto.Data.Migrations
                     b.Property<string>("utilizadorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("utilizadorUsername")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -482,7 +487,7 @@ namespace LabProjeto.Data.Migrations
                         .WithMany()
                         .HasForeignKey("JogoId");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Utilizador")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "utilizador")
                         .WithMany()
                         .HasForeignKey("utilizadorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -490,7 +495,7 @@ namespace LabProjeto.Data.Migrations
 
                     b.Navigation("Jogo");
 
-                    b.Navigation("Utilizador");
+                    b.Navigation("utilizador");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

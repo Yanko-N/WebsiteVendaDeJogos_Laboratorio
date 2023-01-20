@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using LabProjeto.Data.Migrations;
+using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 
 namespace LabProjeto.Controllers
 {
@@ -33,21 +35,21 @@ namespace LabProjeto.Controllers
         public async Task<IActionResult> HomeScreen()
         {
 
-            var applicationDbContext = _context.JogoModel.Include(j => j.categoria);
+            var applicationDbContext = await _context.JogoModel.Include(j => j.categoria).ToListAsync();
 
-            return View(await applicationDbContext.ToListAsync());
+            return View( applicationDbContext);
         }
 
         // GET: JogoModels
-        
+
         public async Task<IActionResult> Index()
         {
-            
+
             var applicationDbContext = _context.JogoModel
                 .Include(j => j.categoria);
 
             string search = HttpContext.Session.GetString("myText");
-            
+
             if (!string.IsNullOrEmpty(search))
             {
                 HttpContext.Session.SetString("myText", "");
@@ -73,13 +75,15 @@ namespace LabProjeto.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        public  IActionResult Comprar(int id)
+       
+        
+        public IActionResult Comprar(int id)
         {
             var jogo = _context.JogoModel.SingleOrDefault(j => j.Id == id);
 
-            var user =  _context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var user = _context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
 
-            var perfil = _context.PerfilModel.SingleOrDefault(p=>p.utilizador == user);
+            var perfil = _context.PerfilModel.SingleOrDefault(p => p.utilizador == user);
 
             if (jogo != null && user != null)
             {
@@ -87,8 +91,8 @@ namespace LabProjeto.Controllers
                 {
                     perfil = perfil,
                     perfilId = perfil.Id,
-                    jogo=jogo,
-                    jogoId=jogo.Id
+                    jogo = jogo,
+                    jogoId = jogo.Id
                 };
 
                 _context.PerfilJogos.Add(perfilJogos);
@@ -96,15 +100,15 @@ namespace LabProjeto.Controllers
 
                 return RedirectToAction("HomeScreen", "JogoModels");
             }
-            else 
+            else
             {
                 return NotFound();
             }
 
 
-            
+
         }
-        public async Task<IActionResult> VerJogos(string myText)
+        public IActionResult VerJogos(string myText)
         {
             if (!string.IsNullOrEmpty(myText))
             {
@@ -114,9 +118,9 @@ namespace LabProjeto.Controllers
             return RedirectToAction("Index", "JogoModels");
         }
 
-        public async Task<IActionResult> VerCategorias(int? id)
+        public  IActionResult VerCategorias(int? id)
         {
-             var cat= _context.CategoriaModel.FirstOrDefault(m=>m.Id==id);
+            var cat = _context.CategoriaModel.FirstOrDefault(m => m.Id == id);
             if (cat != null)
             {
                 HttpContext.Session.SetString("myText", cat.Nome);
@@ -126,7 +130,7 @@ namespace LabProjeto.Controllers
         }
 
         // GET: JogoModels/Details/5
-       
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.JogoModel == null)
@@ -137,6 +141,24 @@ namespace LabProjeto.Controllers
             var jogoModel = await _context.JogoModel
                 .Include(j => j.categoria)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+
+            jogoModel.Comentarios = new List<Comentario>();
+
+            jogoModel.Comentarios = _context.Comentario.Where(c => c.JogoId == id).ToList();
+
+            var pontuacao = _context.Pontuacao.Where(j=>j.JogoId==id).ToList();
+            float media = 0;
+            
+            
+            foreach (var p in pontuacao)
+            {
+                media += p.pontuacao;
+            }
+            media=media/pontuacao.Count();
+
+            jogoModel.Pontuacao = (int)media;
+
             if (jogoModel == null)
             {
                 return NotFound();
@@ -156,7 +178,7 @@ namespace LabProjeto.Controllers
         // POST: JogoModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles ="Admin,Funcionario")]
+        [Authorize(Roles = "Admin,Funcionario")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nome,plataforma,Foto,Preco,categoriaId")] JogoModel jogoModel, IFormFile Foto)
@@ -176,9 +198,9 @@ namespace LabProjeto.Controllers
                 _context.Add(jogoModel);
                 await _context.SaveChangesAsync();
                 var jogo = _context.JogoModel.FirstOrDefault(j => j.Equals(jogoModel));
-               
+
                 return RedirectToAction(nameof(Index));
-            }          
+            }
             ViewData["categoriaId"] = new SelectList(_context.CategoriaModel, "Id", "Nome", jogoModel.categoriaId);
             return View(jogoModel);
         }
@@ -213,24 +235,25 @@ namespace LabProjeto.Controllers
             {
                 return NotFound();
             }
-            
-            
+
+
             if (ModelState.IsValid)
             {
-                if (Foto != null)
-                {
-                    string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Jogos/", Path.GetFileName(Foto.FileName));
-                    FileStream fs = new FileStream(destination, FileMode.Create);
-                    Foto.CopyTo(fs);
-                    fs.Close();
+               
 
-                    jogoModel.Foto = Foto.FileName;
-                }
-                
 
                 try
                 {
-                  
+                    if (Foto != null)
+                    {
+                        string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Jogos/", Path.GetFileName(Foto.FileName));
+                        FileStream fs = new FileStream(destination, FileMode.Create);
+                        Foto.CopyTo(fs);
+                        fs.Close();
+
+                        jogoModel.Foto = Foto.FileName;
+                    }
+
                     _context.Update(jogoModel);
                     await _context.SaveChangesAsync();
                 }
@@ -287,14 +310,14 @@ namespace LabProjeto.Controllers
             {
                 _context.JogoModel.Remove(jogoModel);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool JogoModelExists(int id)
         {
-          return _context.JogoModel.Any(e => e.Id == id);
+            return _context.JogoModel.Any(e => e.Id == id);
         }
     }
 }

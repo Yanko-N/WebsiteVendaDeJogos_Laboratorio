@@ -20,6 +20,12 @@ namespace LabProjeto.Data
         
         public DbSet<LabProjeto.Models.PerfilCategoria> PerfilCategoria { get; set; }
         
+        
+        public DbSet<LabProjeto.Models.Comentario> Comentario { get; set; }
+        
+        
+        public DbSet<LabProjeto.Models.Pontuacao> Pontuacao { get; set; }
+        
 
 
     }

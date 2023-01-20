@@ -21,8 +21,11 @@ namespace LabProjeto.Models
 
         public string plataforma { get; set; }
 
+        public int Pontuacao { get; set; } = 0;
         public int categoriaId { get; set; }
-        public  CategoriaModel? categoria { get; set; }
+        public CategoriaModel? categoria { get; set; }
+
+        public ICollection<Comentario> Comentarios = new List<Comentario>();
 
     }
 }

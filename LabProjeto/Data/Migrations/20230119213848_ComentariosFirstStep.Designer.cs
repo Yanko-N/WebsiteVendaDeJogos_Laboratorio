@@ -4,6 +4,7 @@ using LabProjeto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230119213848_ComentariosFirstStep")]
+    partial class ComentariosFirstStep
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,9 +89,6 @@ namespace LabProjeto.Data.Migrations
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Pontuacao")
-                        .HasColumnType("int");
 
                     b.Property<float>("Preco")
                         .HasColumnType("real");
@@ -174,33 +173,6 @@ namespace LabProjeto.Data.Migrations
                     b.HasIndex("utilizadorId");
 
                     b.ToTable("PerfilModel");
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.Pontuacao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("JogoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("pontuacao")
-                        .HasColumnType("int");
-
-                    b.Property<string>("utilizadorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JogoId");
-
-                    b.HasIndex("utilizadorId");
-
-                    b.ToTable("Pontuacao");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -474,23 +446,6 @@ namespace LabProjeto.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("utilizador");
-                });
-
-            modelBuilder.Entity("LabProjeto.Models.Pontuacao", b =>
-                {
-                    b.HasOne("LabProjeto.Models.JogoModel", "Jogo")
-                        .WithMany()
-                        .HasForeignKey("JogoId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Utilizador")
-                        .WithMany()
-                        .HasForeignKey("utilizadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Jogo");
-
-                    b.Navigation("Utilizador");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

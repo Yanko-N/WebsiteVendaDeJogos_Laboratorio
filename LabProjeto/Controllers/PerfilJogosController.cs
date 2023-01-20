@@ -36,25 +36,7 @@ namespace LabProjeto.Controllers
 
             return View(await jogoscomprados.AsNoTracking().ToListAsync());
         }
-        //    var applicationDbContext = _context.JogoModel
-        //   .Include(j => j.categoria);
-
-        //    string search = HttpContext.Session.GetString("myText");
-
-        //    if (!string.IsNullOrEmpty(search))
-        //    {
-        //        HttpContext.Session.SetString("myText", "");
-
-
-        //        var applicationDbContext2 = _context.JogoModel.Include(j => j.categoria).Where(j => j.Nome.Contains(search));
-
-
-        //        return View(await applicationDbContext2.ToListAsync());
-
-        //    }
-
-        //    return View(await applicationDbContext.ToListAsync()); 
-        //}
+       
 
 
         // GET: PerfilJogos/Details/5

@@ -4,6 +4,7 @@ using LabProjeto.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabProjeto.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120123825_PontuacaoRemovedUserAddOnlyName")]
+    partial class PontuacaoRemovedUserAddOnlyName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,15 +192,13 @@ namespace LabProjeto.Data.Migrations
                     b.Property<int>("pontuacao")
                         .HasColumnType("int");
 
-                    b.Property<string>("utilizadorId")
+                    b.Property<string>("utilizadorUsername")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("JogoId");
-
-                    b.HasIndex("utilizadorId");
 
                     b.ToTable("Pontuacao");
                 });
@@ -482,15 +482,7 @@ namespace LabProjeto.Data.Migrations
                         .WithMany()
                         .HasForeignKey("JogoId");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Utilizador")
-                        .WithMany()
-                        .HasForeignKey("utilizadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Jogo");
-
-                    b.Navigation("Utilizador");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
