@@ -147,9 +147,8 @@ namespace LabProjeto.Controllers
 
             jogoModel.Comentarios = _context.Comentario.Where(c => c.JogoId == id).ToList();
 
-            var pontuacao = _context.Pontuacao.Where(j=>j.JogoId==id).ToList();
             float media = 0;
-            
+            /*
             
             foreach (var p in pontuacao)
             {
@@ -158,6 +157,7 @@ namespace LabProjeto.Controllers
             media=media/pontuacao.Count();
 
             jogoModel.Pontuacao = (int)media;
+            */
 
             if (jogoModel == null)
             {
