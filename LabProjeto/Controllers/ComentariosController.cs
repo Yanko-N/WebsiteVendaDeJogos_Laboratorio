@@ -23,7 +23,7 @@ namespace LabProjeto.Controllers
         public IActionResult Adicionar(int? id)
         {
 
-            if (_context.JogoModel.Any(j => j.Id == id))
+            if (_context.JogoModel.Any(j => j.Id == id) && User.Identity.IsAuthenticated)
             {
                 ViewData["JogoId"] = id;
                 return View();

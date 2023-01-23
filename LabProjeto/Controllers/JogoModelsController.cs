@@ -77,37 +77,7 @@ namespace LabProjeto.Controllers
 
        
         
-        public IActionResult Comprar(int id)
-        {
-            var jogo = _context.JogoModel.SingleOrDefault(j => j.Id == id);
-
-            var user = _context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-
-            var perfil = _context.PerfilModel.SingleOrDefault(p => p.utilizador == user);
-
-            if (jogo != null && user != null)
-            {
-                PerfilJogos perfilJogos = new PerfilJogos()
-                {
-                    perfil = perfil,
-                    perfilId = perfil.Id,
-                    jogo = jogo,
-                    jogoId = jogo.Id
-                };
-
-                _context.PerfilJogos.Add(perfilJogos);
-                _context.SaveChangesAsync();
-
-                return RedirectToAction("HomeScreen", "JogoModels");
-            }
-            else
-            {
-                return NotFound();
-            }
-
-
-
-        }
+        
         public IActionResult VerJogos(string myText)
         {
             if (!string.IsNullOrEmpty(myText))
@@ -143,21 +113,23 @@ namespace LabProjeto.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
 
-            jogoModel.Comentarios = new List<Comentario>();
+            
 
             jogoModel.Comentarios = _context.Comentario.Where(c => c.JogoId == id).ToList();
 
+            var pontuacao = _context.Avalicao.Where(j => j.JogoId == jogoModel.Id).ToList();
             float media = 0;
-            /*
             
             foreach (var p in pontuacao)
             {
                 media += p.pontuacao;
             }
-            media=media/pontuacao.Count();
+
+            if(pontuacao.Count()!=null || pontuacao.Count()!=0) media = media / pontuacao.Count();
+            else media = 0;
 
             jogoModel.Pontuacao = (int)media;
-            */
+            
 
             if (jogoModel == null)
             {

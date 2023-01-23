@@ -58,24 +58,42 @@
 </div>
 
 <div class="recomended-games">
-    <div class="games-row">
+    <style>
+                    body {
+              margin: 0px;
+            }
 
-    </div>
-    <div class="scroll-menu">
+            .box {
+              background-color: #444;
+              color: #fff;
+              border-radius: 5px;
+              padding: 10px;
+              font-size: 100%;
+              width=130;
+              height=130;
+            }
+
+            .box:nth-child(even) {
+              background-color: #ccc;
+              color: #000;
+            }
+
+              .wrapper {
+                width: 600px;
+                display: grid;
+                grid-gap: 10px;
+                grid-template-columns: repeat(4, 300px);
+              }
+</style>
+    <div class="wrapper pb-5">
         @foreach (var item in Model)
         {
-                    <div class="scroll-menu-content" >
+            <div class="box btn" >
 
-                        
-                        <div class="btn"> 
-                            <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">
-                            
-                            <img src="/Fotos/Jogos/@item.Foto" class="game-picture" height="130" width="100" />    
-                            </a>
-                             
-                        </div>
-
-                    </div>
+                <a asp-action="Details" asp-controller="JogoModels" asp-route-id="@item.Id">
+                    <img src="/Fotos/Jogos/@item.Foto" class="game-picture" height="120" width="120" />    
+                </a>
+            </div>
 
         }
     </div>

@@ -24,6 +24,9 @@ namespace LabProjeto.Data
         public DbSet<LabProjeto.Models.Comentario> Comentario { get; set; }
         
         
+        public DbSet<LabProjeto.Models.Avalicao> Avalicao { get; set; }
+        
+        
         
         
 

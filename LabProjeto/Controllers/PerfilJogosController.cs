@@ -211,11 +211,18 @@ namespace LabProjeto.Controllers
 
                 var perfil = _context.PerfilModel.FirstOrDefault(p => p.utilizadorId == userId);
                 var jogo = _context.JogoModel.Find(id);
+                if (perfil.saldo - jogo.Preco < 0)
+                {
+                    ModelState.AddModelError("saldo", "Você não tem dinheiro suficiente");
+                }
+                else
+                {
+                    perfil.jogosComprados.Add(new PerfilJogos { perfil = perfil, jogo = jogo });
+                    perfil.saldo -= jogo.Preco;
 
-                perfil.jogosComprados.Add(new PerfilJogos { perfil = perfil, jogo = jogo });
-                perfil.saldo -= jogo.Preco;
-
-                _context.SaveChanges();
+                    _context.SaveChanges();
+                }
+                
                 
             }
 

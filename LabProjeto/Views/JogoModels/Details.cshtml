@@ -4,48 +4,45 @@
     ViewData["Title"] = Model.Nome;
 }
 
-<h1>@Model.Nome</h1><div class="stars" style="--l:@Model.Pontuacao;--n:10"></div>
+<h1>@Model.Nome</h1>
 <style>
     .stars {
-  --s:40px;
-  width:calc(var(--n,5)*var(--s));
-  height:calc(var(--s)*0.9);
-  --v1:transparent,#000 0.5deg 108deg,#0000 109deg;
-  --v2:transparent,#000 0.5deg  36deg,#0000  37deg;
-  -webkit-mask:
-    conic-gradient(from 54deg  at calc(var(--s)*0.68) calc(var(--s)*0.57),var(--v1)),
-    conic-gradient(from 90deg  at calc(var(--s)*0.02) calc(var(--s)*0.35),var(--v2)),
-    conic-gradient(from 126deg at calc(var(--s)*0.5)  calc(var(--s)*0.7) ,var(--v1)),
-    conic-gradient(from 162deg at calc(var(--s)*0.5)  0                  ,var(--v2));
-  -webkit-mask-size: var(--s) var(--s);
-  -webkit-mask-composite: xor,destination-over;
-  mask-composite: exclude,add;
-  background:
-    linear-gradient(gold 0 0) 0/calc(var(--l,0)*var(--s)) 100% no-repeat
-    #ccc;
-}
+        --s: 40px;
+        width: calc(var(--n,5)*var(--s));
+        height: calc(var(--s)*0.9);
+        --v1: transparent,#000 0.5deg 108deg,#0000 109deg;
+        --v2: transparent,#000 0.5deg 36deg,#0000 37deg;
+        -webkit-mask: conic-gradient(from 54deg at calc(var(--s)*0.68) calc(var(--s)*0.57),var(--v1)), conic-gradient(from 90deg at calc(var(--s)*0.02) calc(var(--s)*0.35),var(--v2)), conic-gradient(from 126deg at calc(var(--s)*0.5) calc(var(--s)*0.7),var(--v1)), conic-gradient(from 162deg at calc(var(--s)*0.5) 0,var(--v2));
+        -webkit-mask-size: var(--s) var(--s);
+        -webkit-mask-composite: xor,destination-over;
+        mask-composite: exclude,add;
+        background: linear-gradient(gold 0 0) 0/calc(var(--l,0)*var(--s)) 100% no-repeat #ccc;
+    }
 </style>
 
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-action="Adicionar" class="btn btn-dark" asp-controller="Pontuacaos" asp-route-id="@Model.Id">Adicionar Avaliação</a>
+}
+<div class="stars" style="--l:@Model.Pontuacao;--n:10"></div>
 
-<div>
-    <hr />
     <img src="/Fotos/Jogos/@Model.Foto" width="600" height="400">
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Nome
         </dt>
-        
-        <dd class = "col-sm-10">
+
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Preço
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Preco)
         </dd>
         <dt class="col-sm-2">
-            
+
             Categoria
         </dt>
         <dd class="col-sm-10">
@@ -54,11 +51,11 @@
         <dt class="col-sm-2">
             Plataforma
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.plataforma)
         </dd>
     </dl>
-</div>
+
 <div class="buy-button">
     <form asp-controller="PerfilJogos" asp-action="Comprar" method="post">
         <input type="hidden" asp-for="@Model.Id" />
@@ -66,45 +63,42 @@
     </form>
 </div>
 
-    <h1><p> Comentarios|</p></h1>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <a asp-action="Adicionar" class="btn btn-dark" asp-controller="Comentarios" asp-route-id="@Model.Id">Adicionar Comentario</a>
-    }
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Id
-                </th>
-                <th>
-                    Autores
-                </th>
-                <th>
-                    Comentario
-                </th>
-               
-        </thead>
-        <tbody>
-@foreach (var item in Model.Comentarios){
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem=>item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                     <td>
-                        @Html.DisplayFor(modelItem => item.Message)
-                    </td>
-                </tr>   
+<h1><p> Comentarios</p></h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-action="Adicionar" class="btn btn-dark" asp-controller="Comentarios" asp-route-id="@Model.Id">Adicionar Comentario</a>
 }
-        </tbody>
-    </table>
+<div class="pb-4">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Autores
+            </th>
+            <th>
+                Comentario
+            </th>
 
-    
-
-
-    
-
+    </thead>
+    <tbody>
+@foreach (var item in Model.Comentarios)
+{
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+            </tr>
+}
+    </tbody>
+</table>
+</div>
 
