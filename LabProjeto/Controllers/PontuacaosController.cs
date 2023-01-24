@@ -41,71 +41,24 @@ namespace LabProjeto.Controllers
         {
             avalicao.JogoId = id;
             avalicao.Jogo = _context.JogoModel.SingleOrDefault(j => j.Id == id);
-
-            if (ModelState.IsValid)
+            if (!_context.Avalicao.Any(a => a.Name == User.Identity.Name))
             {
-                _context.Add(avalicao);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "JogoModels", new { id = avalicao.JogoId });
+                if (ModelState.IsValid)
+                {
+                    _context.Add(avalicao);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "JogoModels", new { id = avalicao.JogoId });
+                }
             }
+            else { 
+                ModelState.AddModelError("Name", "Já existe uma avaliação sua"); 
+            }
+            
             ViewData["JogoId"] = id;
             return View(avalicao);
+            
         }
 
-        // GET: Pontuacaos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Avalicao == null)
-            {
-                return NotFound();
-            }
-
-            var avalicao = await _context.Avalicao.FindAsync(id);
-            if (avalicao == null)
-            {
-                return NotFound();
-            }
-            ViewData["JogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", avalicao.JogoId);
-            return View(avalicao);
-        }
-
-        // POST: Pontuacaos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,JogoId,Name,pontuacao")] Avalicao avalicao)
-        {
-            if (id != avalicao.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(avalicao);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AvalicaoExists(avalicao.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["JogoId"] = new SelectList(_context.JogoModel, "Id", "Nome", avalicao.JogoId);
-            return View(avalicao);
-        }
-
-        
         private bool AvalicaoExists(int id)
         {
           return _context.Avalicao.Any(e => e.Id == id);
