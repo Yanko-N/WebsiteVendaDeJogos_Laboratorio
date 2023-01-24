@@ -6,7 +6,7 @@
 
 <h1>Apagar</h1>
 
-<h3>Você tem a certeza que quer apagar isto?</h3>
+<h3>Você tem a certeza que quer apagar @Model.Nome</h3>
 <div>
     <h4>JogoModel</h4>
     <hr />
@@ -33,7 +33,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Apagar" class="btn btn-danger" /> |
-        <a asp-action="Index">Voltar para a lista</a>
+        <input type="submit" value="Apagar" class="btn btn-dark pb-2" /> |
+        <a asp-action="Index" class="btn btn-dark pb-2">Voltar para a lista</a>
     </form>
 </div>

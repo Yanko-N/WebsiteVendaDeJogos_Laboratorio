@@ -12,8 +12,8 @@ namespace LabProjeto.Models
         public string Nome { get; set; }
 
 
-        
-        [RegularExpression(@"^.+\.([jJ][pP][gG])$", ErrorMessage = "Só jpg files")]
+
+        [RegularExpression(@"^.+\.[[jJ][pP][gG]][[pP][nN][gG]]$", ErrorMessage = "Só jpg e png files")]
         public string? Foto { get; set; }
         
         [Required(ErrorMessage = "É obrigatório o jogo ter um preço")]

@@ -13,7 +13,7 @@
 @if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
 {
     <p>
-        <a asp-action="Create">Adicionar novo jogo</a>
+        <a class="btn btn-dark pb-2" asp-action="Create">Adicionar novo jogo</a>
     </p>
 }
 
@@ -69,13 +69,13 @@
                         if (User.IsInRole("Funcionario") || User.IsInRole("Admin"))
                         {
 
-                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id"> Apagar </a>
+                            <a asp-action="Edit" class="btn btn-dark pb-2" asp-route-id="@item.Id">Editar</a>
+                            <a asp-action="Delete" class="btn btn-dark pb-2" asp-route-id="@item.Id"> Apagar </a>
 
                         }
                        
                     }
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                    <a asp-action="Details" class="btn btn-dark pb-2" asp-route-id="@item.Id">Detalhes</a>
             </td>
         </tr>
 }

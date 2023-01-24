@@ -1,7 +1,7 @@
 ﻿@model LabProjeto.Models.PerfilJogos
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Adicionar";
 }
 
 <h1>Create</h1>
@@ -20,14 +20,14 @@
                 <select asp-for="jogoId" class ="form-control" asp-items="ViewBag.jogoId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Adicionar" class="btn btn-primary" />
+                <input type="submit" value="Adicionar" class="btn btn-dark pb-2" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Voltar à Lista</a>
+    <a asp-action="Index" class="btn btn-dark pb-2">Voltar à Lista</a>
 </div>
 
 @section Scripts {

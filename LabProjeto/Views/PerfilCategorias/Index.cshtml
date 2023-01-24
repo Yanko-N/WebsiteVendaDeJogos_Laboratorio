@@ -3,7 +3,7 @@
 <h1>Lista de Categorias Favoritas</h1>
 
 <p>
-    <a asp-action="Create">Adicionar Categoria</a>
+    <a class="btn btn-primary pb-2"  asp-action="Create">Adicionar Categoria</a>
 </p>
 <table class="table">
     <thead>
@@ -27,8 +27,8 @@
                     @Html.DisplayFor(modelItem => item.categoria.Descricao)
                 </td>
                 <td>
-                    
-                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-dark pb-2">Apagar</a>
                 </td>
             </tr>
         }

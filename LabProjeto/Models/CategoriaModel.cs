@@ -15,7 +15,8 @@ namespace LabProjeto.Models
         public string Descricao { get; set; }
 
 
-        [RegularExpression(@"^.+\.([jJ][pP][gG])$", ErrorMessage = "Só jpg files")]
+        [RegularExpression(@"^.+\.[[jJ][pP][gG]][[pP][nN][gG]]$", ErrorMessage = "Só jpg e png files")]
+
         public string? Foto { get; set; }
     }
 }

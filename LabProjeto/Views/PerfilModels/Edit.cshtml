@@ -6,7 +6,7 @@
     ViewData["Title"] = "Editar Conta";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
@@ -19,11 +19,11 @@
         <label asp-for="Role"></label>
         <select asp-for="Role" asp-items="Model.Roles" class="form-control"></select>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-dark pb-2" >Guardar</button>
 </form>
 
 <div>
-    <a asp-action="Index">Voltar a lista</a>
+    <a class="btn btn-dark pb-2" asp-action="Index">Voltar a lista</a>
 </div>
 
 @section Scripts {
