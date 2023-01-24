@@ -69,6 +69,7 @@ namespace LabProjeto.Controllers
                 if (Foto != null)
                 {
                     string destination = Path.Combine(_he.ContentRootPath, "wwwroot/Fotos/Categorias/", Path.GetFileName(Foto.FileName));
+                    
                     FileStream fs = new FileStream(destination, FileMode.Create);
                     Foto.CopyTo(fs);
                     fs.Close();

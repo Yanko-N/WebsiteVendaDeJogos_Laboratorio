@@ -161,7 +161,7 @@ namespace LabProjeto.Areas.Identity.Pages.Account
                         _dbContext.PerfilModel.Add(perfil);
                         await _dbContext.SaveChangesAsync();
 
-                        await _userManager.AddToRoleAsync(user, "Admin");
+                        await _userManager.AddToRoleAsync(user, "Cliente");
 
 
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
