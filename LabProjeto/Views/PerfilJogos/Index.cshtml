@@ -10,6 +10,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>Nome</th>
             <th>Preço</th>
             <th>Plataforma</th>
@@ -19,6 +20,9 @@
     <tbody>
 @foreach (var jogo in Model) {
         <tr>
+                <td>
+                    <img src="/Fotos/Jogos/@jogo.Foto" width="160" height="120">
+                </td>
                 <td>@jogo.Nome</td>
                 <td>@jogo.Preco</td>
                 <td>@jogo.plataforma</td>
