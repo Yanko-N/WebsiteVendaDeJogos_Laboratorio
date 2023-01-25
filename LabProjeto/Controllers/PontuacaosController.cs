@@ -41,7 +41,7 @@ namespace LabProjeto.Controllers
         {
             avalicao.JogoId = id;
             avalicao.Jogo = _context.JogoModel.SingleOrDefault(j => j.Id == id);
-            if (!_context.Avalicao.Any(a => a.Name == User.Identity.Name))
+            if (!_context.Avalicao.Where(a=>a.JogoId==avalicao.JogoId).Any(a => a.Name == User.Identity.Name))
             {
                 if (ModelState.IsValid)
                 {
